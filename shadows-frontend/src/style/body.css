@@ -1,0 +1,108 @@
+/* style/body.css */
+
+.home {
+  min-height: calc(100vh - 80px); /* 100vh ناقص الطول ديال الـ Header تقريباً */
+  padding-top: 80px; /* لتجنب التداخل مع الـ header الثابت */
+
+  background: linear-gradient(135deg, #0a0f18 0%, #05080d 50%, #02060d 100%),
+              url('https://images.unsplash.com/photo-1542751371-adc38448a05e?w=1200&h=800&fit=crop') no-repeat center center;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.overlay {
+  background: rgba(0, 0, 0, 0.75); 
+  width: 100%;
+  min-height: calc(100vh - 80px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 20px;
+}
+
+.mainTitle {
+  font-size: 3rem;
+  font-weight: 800;
+  color: #fff;
+  text-shadow: 0 0 20px rgba(0, 210, 255, 0.8);
+  margin-bottom: 20px;
+}
+
+.desc {
+  font-size: 1.2rem;
+  color: #ccc;
+  max-width: 600px;
+  line-height: 1.6;
+  margin-bottom: 40px;
+}
+
+.club-features {
+  display: flex;
+  gap: 30px;
+  margin-bottom: 40px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.feature {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(0, 210, 255, 0.3);
+  border-radius: 10px;
+  padding: 20px;
+  width: 200px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.feature:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 210, 255, 0.3);
+}
+
+.feature h3 {
+  color: #00d2ff;
+  margin-bottom: 10px;
+}
+
+.feature p {
+  color: #bbb;
+  font-size: 0.9rem;
+}
+
+.join-club-btn {
+  background: linear-gradient(135deg, #00d2ff, #0078e8);
+  color: white;
+  border: none;
+  padding: 15px 30px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.join-club-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(0, 210, 255, 0.4);
+}
+
+@media (max-width: 768px) {
+  .mainTitle {
+    font-size: 2rem;
+  }
+  
+  .club-features {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .feature {
+    width: 100%;
+    max-width: 300px;
+  }
+}

@@ -1,0 +1,68 @@
+.page {
+  padding: 40px 5%;
+  background: radial-gradient(circle at top, #0a0f18, #05080d 55%, #02060d);
+  min-height: 100vh;
+  color: #e5e7ea;
+}
+
+.page h2 {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 20px;
+}
+
+.my-tournaments-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding: 20px 0;
+  justify-content: center;
+}
+
+.my-card {
+  flex: 1 1 300px;
+  max-width: 350px;
+  background: linear-gradient(135deg, #161b22 0%, #0f1722 100%);
+  border: 1px solid #2d3a4b;
+  border-radius: 14px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.32);
+}
+
+.my-card:hover {
+  transform: translateY(-7px);
+  border-color: #00d2ff;
+  box-shadow: 0 14px 34px rgba(0, 210, 255, 0.25);
+}
+
+.status-box {
+  margin: 15px 0;
+  padding: 8px;
+  border-radius: 6px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 0.85rem;
+}
+
+.status-approved {
+  background: rgba(45, 194, 107, 0.1);
+  color: #3fb950;
+  border: 1px solid rgba(45, 194, 107, 0.3);
+}
+
+.status-pending {
+  background: rgba(210, 153, 34, 0.1);
+  color: #d29922;
+  border: 1px solid rgba(210, 153, 34, 0.3);
+}
+
+.my-card-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: auto;
+}

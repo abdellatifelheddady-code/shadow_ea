@@ -1,0 +1,297 @@
+/* style/tournaments.css */
+
+.page {
+  padding: 40px 5%;
+  background-color: #0f1214; /* لون غامق كيعطي l'ambiance ديال gaming */
+  min-height: 100vh;
+  color: white;
+}
+
+.page-header {
+  margin-bottom: 40px;
+  border-left: 4px solid #00d2ff;
+  padding-left: 20px;
+}
+
+.section-title {
+  font-size: 2.5rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #ffffff;
+  margin: 0;
+}
+
+.page-header p {
+  color: #8b949e;
+  margin-top: 5px;
+}
+
+/* Container الأساسي للترتيب الأفقي */
+.tournaments-grid {
+  display: grid;
+  /* كيدير تقسيم تلقائي: Cards كيبداو من 320px وكيطلعو على حساب الشاشة */
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 25px;
+  width: 100%;
+}
+
+/* ستايل الكارطة الواحدة */
+.tournament-card {
+  background: linear-gradient(135deg, #161b22 0%, #0f1620 100%);
+  border: 1px solid #2d3a4b;
+  border-radius: 14px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: all 0.25s ease;
+  position: relative;
+  min-height: 360px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
+}
+
+.tournament-card:hover {
+  transform: translateY(-8px);
+  border-color: #00d2ff;
+  box-shadow: 0 16px 32px rgba(0, 210, 255, 0.2);
+}
+
+/* Card Header */
+.card-header {
+  margin-bottom: 14px;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.card-header h3 {
+  margin: 0;
+  font-size: 1.2rem;
+  color: #f0f6fc;
+  flex: 1;
+}
+
+/* Card Body */
+.card-body {
+  flex: 1;
+  margin-bottom: 16px;
+}
+
+.description {
+  color: #9ca3af;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  margin-bottom: 12px;
+}
+
+.meta-info {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.info-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #8b949e;
+  font-size: 0.85rem;
+}
+
+/* Card Footer */
+.card-footer {
+  border-top: 1px solid #2d3a4b;
+  padding-top: 12px;
+}
+
+.card-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.btn-details {
+  flex: 1;
+  text-align: center;
+  text-decoration: none;
+  background: #1e2530;
+  color: #a8b5c8;
+  padding: 10px 12px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  border: 1px solid #2d3a4b;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.btn-details:hover {
+  background: #2a3340;
+  color: #00d2ff;
+  border-color: #00d2ff;
+}
+
+.btn-join {
+  flex: 1;
+  background: linear-gradient(135deg, #00c4ff, #0078e8);
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-join:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(0, 196, 255, 0.3);
+}
+
+.joined-status {
+  flex: 1;
+  text-align: center;
+  background: rgba(35, 209, 139, 0.12);
+  color: #23d18b;
+  padding: 10px;
+  border-radius: 8px;
+  font-weight: 700;
+  border: 1px solid rgba(35, 209, 139, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Game Tag */
+.game-tag {
+  background: linear-gradient(135deg, #00b8d4, #0098c9);
+  color: white;
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Loading State */
+.loading-spinner {
+  text-align: center;
+  margin-top: 100px;
+  font-size: 1.2rem;
+  color: #00d2ff;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .tournaments-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Tournament details page */
+.details-container {
+  max-width: 980px;
+  margin: 0 auto;
+  background: rgba(22, 27, 34, 0.95);
+  border: 1px solid #2b3340;
+  border-radius: 16px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
+  overflow: hidden;
+}
+.details-header {
+  padding: 26px 32px;
+  background: linear-gradient(130deg, rgba(0, 210, 255, 0.16), rgba(25, 34, 50, 0.95));
+  border-bottom: 1px solid #2d3a4b;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+.details-header h1 {
+  margin: 0;
+  font-size: 2rem;
+  color: #e8f3ff;
+}
+.game-badge {
+  background: rgba(0, 210, 255, 0.11);
+  color: #00c9ff;
+  font-size: 0.82rem;
+  font-weight: 700;
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(0, 210, 255, 0.28);
+}
+.details-main {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 24px;
+  padding: 24px;
+}
+.description-section,
+.participants-section {
+  background: #101623;
+  border: 1px solid #243040;
+  border-radius: 12px;
+  padding: 20px;
+}
+.description-section h3,
+.participants-section h3 {
+  margin-top: 0;
+  color: #c9d1d9;
+  font-size: 1.1rem;
+}
+.description-section p {
+  color: #adb7c8;
+  line-height: 1.65;
+}
+.info-row {
+  display: flex;
+  gap: 14px;
+  margin-top: 14px;
+  color: #9ba8b7;
+  font-size: 0.95rem;
+}
+.players-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-height: 320px;
+  overflow-y: auto;
+}
+.player-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #151f2d;
+  border: 1px solid #2c3847;
+  border-radius: 10px;
+  padding: 10px 14px;
+}
+.player-rank {
+  font-weight: 700;
+  color: #00d4ff;
+}
+.player-name {
+  color: #e9f2ff;
+}
+.btn-back {
+  margin-bottom: 18px;
+  border: 1px solid #00d2ff;
+  background: #0a1520;
+  color: #d7edff;
+  padding: 8px 14px;
+  border-radius: 9px;
+  cursor: pointer;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+.btn-back:hover {
+  transform: translateY(-1px);
+  background: #0d1c30;
+}
+@media (max-width: 860px) {
+  .details-main {
+    grid-template-columns: 1fr;
+  }
+}

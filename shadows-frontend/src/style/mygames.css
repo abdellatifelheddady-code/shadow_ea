@@ -1,0 +1,162 @@
+/* style/mygames.css */
+
+.page {
+  padding: 50px 5%;
+  background-color: #0d1117;
+  min-height: 100vh;
+  color: white;
+}
+
+.header-section {
+  margin-bottom: 40px;
+}
+
+.title {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: #fff;
+  text-shadow: 0 0 10px rgba(0, 210, 255, 0.5);
+}
+
+.subtitle {
+  color: #8b949e;
+  font-size: 1.1rem;
+}
+
+/* Grid Layout */
+.games-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 25px;
+  justify-content: center;
+}
+
+.game-card {
+  flex: 1 1 280px;
+  max-width: 340px;
+}
+
+/* Game Card Style */
+.game-card {
+  position: relative;
+  height: 220px;
+  background: radial-gradient(circle at top right, #1f2a38, #0f1722 60%);
+  border-radius: 16px;
+  border: 1px solid #2b3945;
+  overflow: hidden;
+  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+  display: flex;
+  align-items: flex-end; /* المحتوى كيبدا من التحت */
+  padding: 20px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+  transform: rotate(-2deg);
+}
+
+.game-card:hover {
+  transform: translateY(-10px) rotate(0deg);
+  border-color: #00d2ff;
+  box-shadow: 0 18px 34px rgba(0, 210, 255, 0.28);
+}
+
+.game-card:nth-child(odd) {
+  transform: rotate(-2deg);
+}
+
+.game-card:nth-child(even) {
+  transform: rotate(2deg);
+}
+
+.game-card:hover,
+.game-card:hover:nth-child(odd),
+.game-card:hover:nth-child(even) {
+  transform: translateY(-10px) rotate(0deg);
+}
+.game-card:hover {
+  transform: translateY(-10px) scale(1.03);
+  border-color: #00d2ff;
+  box-shadow: 0 18px 34px rgba(0, 210, 255, 0.28);
+}
+
+/* تأثير الإضاءة من الجنب */
+.game-card::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(135deg, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.15) 100%);
+  z-index: 1;
+}
+
+.game-card-overlay {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: linear-gradient(130deg, rgba(0, 210, 255, 0.12), rgba(0, 0, 0, 0));
+  z-index: 1;
+}
+
+.game-card-content {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+}
+
+.game-tag {
+  background: #00d2ff;
+  color: #000;
+  padding: 2px 10px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.game-card h3 {
+  margin: 10px 0;
+  font-size: 1.3rem;
+  color: #fff;
+}
+
+.game-meta {
+  font-size: 0.85rem;
+  color: #8b949e;
+  margin-bottom: 15px;
+}
+
+.btn-play {
+  display: block;
+  text-align: center;
+  background: #fff;
+  color: #000;
+  text-decoration: none;
+  padding: 8px;
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  transition: 0.3s;
+}
+
+.btn-play:hover {
+  background: #00d2ff;
+  color: #fff;
+}
+
+/* Empty State */
+.empty-state {
+  text-align: center;
+  padding: 100px;
+  background: #161b22;
+  border-radius: 20px;
+  border: 2px dashed #30363d;
+}
+
+.btn-explore {
+  display: inline-block;
+  margin-top: 20px;
+  color: #00d2ff;
+  text-decoration: none;
+  border: 1px solid #00d2ff;
+  padding: 10px 25px;
+  border-radius: 8px;
+}

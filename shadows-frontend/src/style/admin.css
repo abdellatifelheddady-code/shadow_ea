@@ -1,0 +1,178 @@
+/* style/admin.css */
+@import "./tournaments.css";
+
+/* Admin Page Header */
+.admin-page {
+  background: radial-gradient(circle at top right, #0a0f18, #05080d);
+}
+
+.admin-page .section-title {
+  text-shadow: 0 0 12px rgba(255, 159, 67, 0.4);
+}
+
+/* Grid Layout Admin */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 22px;
+  width: 100%;
+}
+
+/* Admin Card */
+.admin-card {
+  background: linear-gradient(135deg, #161b22 0%, #0f1620 100%);
+  border: 1px solid #2d3a4b;
+  border-radius: 14px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: all 0.25s ease;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
+}
+
+.admin-card:hover {
+  transform: translateY(-6px);
+  border-color: #ff9f43;
+  box-shadow: 0 14px 32px rgba(255, 159, 67, 0.2);
+}
+
+/* Card Body */
+.card-body {
+  margin-bottom: 18px;
+}
+
+.status-badge-pending {
+  display: inline-block;
+  background: rgba(255, 159, 67, 0.15);
+  color: #ff9f43;
+  border: 1px solid rgba(255, 159, 67, 0.3);
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.admin-card h3 {
+  margin: 12px 0;
+  font-size: 1.3rem;
+  color: #f0f6fc;
+}
+
+.admin-info {
+  color: #9ca3af;
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+.admin-info p {
+  margin: 8px 0;
+}
+
+.desc-text {
+  margin-top: 12px !important;
+  color: #8b949e;
+  line-height: 1.5;
+}
+
+/* Card Buttons */
+.card-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.btn-approve,
+.btn-delete,
+.btn-reject {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.9rem;
+}
+
+.btn-approve {
+  background: linear-gradient(135deg, #23d18b, #1ba872);
+  color: white;
+}
+
+.btn-approve:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(35, 209, 139, 0.3);
+}
+
+.btn-delete,
+.btn-reject {
+  background: linear-gradient(135deg, #ff4b5c, #e12c3c);
+  color: white;
+}
+
+.btn-delete:hover,
+.btn-reject:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(255, 75, 92, 0.3);
+}
+
+/* Empty State */
+.no-data {
+  text-align: center;
+  padding: 60px 40px;
+  background: rgba(22, 27, 34, 0.8);
+  border-radius: 14px;
+  border: 1px dashed #2d3a4b;
+  color: #9ca3af;
+  font-size: 1.05rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .card-buttons {
+    flex-direction: column;
+  }
+}
+.tab-buttons {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 30px;
+}
+
+.tab-buttons button {
+  background: #21262d;
+  color: white;
+  border: 1px solid #30363d;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.tab-buttons button.active {
+  background: #00d2ff;
+  border-color: #00d2ff;
+  color: #000;
+  font-weight: bold;
+}
+
+.tag-approved {
+  background: rgba(45, 194, 107, 0.2);
+  color: #3fb950;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.7rem;
+}
+
+.tag-pending {
+  background: rgba(210, 153, 34, 0.2);
+  color: #d29922;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.7rem;
+}

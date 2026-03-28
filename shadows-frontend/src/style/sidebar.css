@@ -1,0 +1,45 @@
+.sidebar {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 220px;
+  height: 100%;
+  background: linear-gradient(180deg, #111122, #1f1f2a);
+  border-right: 2px solid #0ff;
+  padding: 1.5rem 1rem;
+}
+
+/* Logo */
+.logoBox {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.logoBox img {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  border: 2px solid #0ff;
+  margin-bottom: 0.5rem;
+}
+
+.logoBox h2 {
+  color: #0ff;
+  font-size: 1.2rem;
+}
+
+/* Links */
+.sidebar a {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #0ff;
+  margin: 1rem 0;
+  text-decoration: none;
+  transition: 0.3s;
+}
+
+.sidebar a:hover {
+  color: #ff0;
+  transform: translateX(5px);
+}
