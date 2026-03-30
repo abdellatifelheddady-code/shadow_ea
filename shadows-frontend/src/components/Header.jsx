@@ -26,12 +26,12 @@ export default function Header({ user, setUser }) {
       </div>
 
       <nav>
-        <Link to="/">Home</Link>
-        <span onClick={() => handleLinkClick("/tournaments")} style={{ cursor: "pointer" }}>Tournaments</span>
-        <span onClick={() => handleLinkClick("/create-tournament")} style={{ cursor: "pointer" }}>Create</span>
-        <span onClick={() => handleLinkClick("/my-tournaments")} style={{ cursor: "pointer" }}>My Tournaments</span>
-        <span onClick={() => handleLinkClick("/joined-tournaments")} style={{ cursor: "pointer" }}>My Games</span>
-        {user?.is_admin && <span onClick={() => handleLinkClick("/admin")} style={{ cursor: "pointer" }}>Admin</span>}
+        <Link to="/" className="nav-link">Home</Link>
+        <span className="nav-link" onClick={() => handleLinkClick("/tournaments")}>Tournaments</span>
+        <span className="nav-link" onClick={() => handleLinkClick("/create-tournament")}>Create</span>
+        <span className="nav-link" onClick={() => handleLinkClick("/my-tournaments")}>My Tournaments</span>
+        <span className="nav-link" onClick={() => handleLinkClick("/joined-tournaments")}>My Games</span>
+        {user?.is_admin && <span className="nav-link" onClick={() => handleLinkClick("/admin")}>Admin</span>}
       </nav>
 
       <div className="auth">
@@ -39,7 +39,7 @@ export default function Header({ user, setUser }) {
           <button onClick={() => navigate("/login")}>Login</button>
         ) : (
           <>
-            <span>{user?.name && user.name !== '0' ? user.name : 'User'}</span>
+            <span>{user?.name && user.name !== '0' ? user.name : 'Player'}</span>
             <button onClick={handleLogout}>Logout</button>
           </>
         )}

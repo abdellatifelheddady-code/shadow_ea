@@ -15,7 +15,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'is_admin', // مهم
+        'is_admin',
+        'phone', // مهم
     ];
 
     protected $hidden = [
@@ -32,5 +33,14 @@ public function joinedTournaments()
 {
     return $this->belongsToMany(Tournament::class, 'tournament_user');
 }
-
+// فـ ملف User.php
+public function team()
+{
+    // ملاحظة: بما أن team_id كاين فـ Pivot، غادي نعتمدو على الـ Pivot فـ الـ Controller
+    return $this->belongsTo(Team::class, 'team_id');
+}
+public function registrations()
+{
+    return $this->hasMany(TournamentRegistration::class);
+}
 }

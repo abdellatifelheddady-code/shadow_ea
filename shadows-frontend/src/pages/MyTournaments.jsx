@@ -10,11 +10,13 @@ export default function MyTournaments() {
   const fetchData = async () => {
     try {
       setLoading(true);
-      // هذا المسار يجب أن يعيد فقط بطولات المستخدم الحالي
+      console.log("Fetching my tournaments...");
       const res = await api.get("/my-tournaments");
+      console.log("Response:", res.data);
       setTournaments(res.data);
     } catch (err) {
       console.error("Error fetching my tournaments:", err);
+      console.error("Error details:", err.response);
     } finally {
       setLoading(false);
     }
@@ -44,14 +46,20 @@ export default function MyTournaments() {
                 <span className="game-name">🎮 {t.game}</span>
               </div>
               
+              <p className="card-description">{t.description ? t.description.substring(0, 60) + "..." : "No description"}</p>
+              
               {/* عرض الحالة بناءً على is_approved من الـ Database */}
               <div className={`status-box ${t.is_approved ? 'status-approved' : 'status-pending'}`}>
                 {t.is_approved ? "✅ Approved" : "⏳ Pending"}
               </div>
 
+              <div className="participants-count">
+                👥 {t.participants?.length || 0} Participants
+              </div>
+
               <div className="my-card-actions">
                  <Link to={`/tournaments/${t.id}`} className="btn-manage btn-view">
-                   Details
+                  Details
                  </Link>
                  <span className="date-tag">📅 {t.date}</span>
               </div>

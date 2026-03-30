@@ -52,36 +52,22 @@ class AuthController extends Controller
         }
     }
 
-    public function register(Request $request)
-{
-    try {
-        // validation
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|string|confirmed|min:6',
-        ]);
+    public function register(Request $request) {
+    $data = $request->validate([
+        'name' => 'required|string|max:255',
+        'email' => 'required|email|unique:users,email',
+        'phone' => 'required|string', // الهاتف إجباري في التسجيل
+        'password' => 'required|string|confirmed|min:6',
+    ]);
 
-        // create user
-        $user = \App\Models\User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => \Illuminate\Support\Facades\Hash::make($request->password),
-            'is_admin' => false, // default
-        ]);
+    $user = User::create([
+        'name' => $data['name'],
+        'email' => $data['email'],
+        'phone' => $data['phone'],
+        'password' => Hash::make($data['password']),
+        'is_admin' => false,
+    ]);
 
-        // create token
-        $token = $user->createToken('token')->plainTextToken;
-
-        return response()->json([
-            'user' => $user,
-            'token' => $token
-        ], 201);
-
-    } catch (\Exception $e) {
-        return response()->json([
-            'error' => $e->getMessage()
-        ], 500);
-    }
+    return response()->json(['user' => $user, 'token' => $user->createToken('token')->plainTextToken], 201);
 }
 }

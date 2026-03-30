@@ -1,92 +1,90 @@
-/* style/login.css */
-
-/* Page wrapper */
+﻿/* login.css */
 .authPage {
-  min-height: 100vh;
-  padding: 40px 20px;
+  min-height: 90vh;
   display: flex;
-  justify-content: center;
   align-items: center;
-  background: radial-gradient(circle at top left, #091021, #05080f 50%, #02060d);
-  color: #e5ecf5;
+  justify-content: center;
+  background: radial-gradient(circle at center, #1a1f2b 0%, #0d1117 100%);
+  padding: 20px;
 }
 
-.authPage h2 {
-  margin: 0 0 8px;
-  font-size: 2rem;
-  color: #f6fbff;
-  text-align: center;
-}
-
-.authPage form {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-}
-
-.authPage input {
-  border: 1px solid #2f3f54;
-  background: rgba(23, 33, 44, 0.88);
-  color: #e8f0f9;
-  padding: 12px 14px;
-  border-radius: 9px;
-  font-size: 0.95rem;
-  outline: none;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
-}
-
-.authPage input:focus {
-  border-color: #00baff;
-  box-shadow: 0 0 12px rgba(0, 186, 255, 0.3);
-}
-
-.authPage button {
-  border: none;
-  border-radius: 10px;
-  background: linear-gradient(135deg, #00a5ff, #0079f0);
-  color: #f3f9ff;
-  padding: 12px;
-  font-size: 1rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: transform 0.2s ease, filter 0.2s ease;
-}
-
-.authPage button:hover {
-  transform: translateY(-1px);
-  filter: brightness(1.12);
-}
-
-/* كادر جامع للفورم باش يجمع التيكست لي لتحت حتى هو */
 .authBox {
-  background-color: rgba(9, 15, 24, 0.92);
-  min-width: 340px;
-  max-width: 420px;
-  padding: 36px;
-  border-radius: 14px;
-  border: 1px solid #2f3e53;
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-  box-shadow: 0 14px 30px rgba(0,0,0,0.45);
+  background: #161b22;
+  width: 100%;
+  max-width: 400px;
+  padding: 40px;
+  border-radius: 20px;
+  border: 1px solid #30363d;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+  position: relative;
 }
 
-/* التنسيق ديال الرابط لتحت */
-.authRedirect {
+.authBox::before {
+  content: "";
+  position: absolute;
+  top: -2px; left: -2px; right: -2px; bottom: -2px;
+  background: linear-gradient(45deg, #ff0055, #00d4ff);
+  z-index: -1;
+  border-radius: 22px;
+  opacity: 0.3;
+}
+
+.authBox h2 {
   text-align: center;
-  margin-top: 15px;
-  font-size: 0.95rem;
-  color: #bbb;
+  font-family: 'Orbitron', sans-serif;
+  color: #fff;
+  margin-bottom: 30px;
+  letter-spacing: 3px;
+}
+
+.authBox form { display: flex; flex-direction: column; gap: 20px; }
+
+.authBox input {
+  padding: 12px 15px;
+  background: #0d1117;
+  border: 1px solid #30363d;
+  border-radius: 8px;
+  color: #fff;
+  outline: none;
+  transition: 0.3s;
+}
+
+.authBox input:focus {
+  border-color: #00d4ff;
+  box-shadow: 0 0 10px rgba(0, 212, 255, 0.2);
+}
+
+.authBox button {
+  padding: 15px;
+  background: #ff0055;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  text-transform: uppercase;
+  cursor: pointer;
+  font-family: 'Orbitron';
+  transition: 0.3s;
+  margin-top: 10px;
+}
+
+.authBox button:hover {
+  background: #00d4ff;
+  color: #000;
+  box-shadow: 0 0 20px #00d4ff;
+}
+
+.authRedirect {
+  margin-top: 25px;
+  text-align: center;
+  font-size: 0.9rem;
+  color: #8b949e;
 }
 
 .authRedirect a {
-  color: #00d2ff;
+  color: #00d4ff;
   text-decoration: none;
-  font-weight: 600;
-  transition: all 0.3s ease;
+  font-weight: bold;
 }
 
-.authRedirect a:hover {
-  color: white;
-  text-shadow: 0 0 10px #00d2ff;
-}
+.authRedirect a:hover { text-decoration: underline; }

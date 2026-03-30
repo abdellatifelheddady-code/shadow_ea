@@ -1,0 +1,247 @@
+﻿/* tournamentsDetails.css */
+
+.tournament-detail {
+  background: #0b0e14;
+  min-height: 100vh;
+  padding: 20px 0;
+  color: white;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* 1. Banner Header */
+.tournament-banner-card {
+  position: relative;
+  height: 350px;
+  border-radius: 20px;
+  overflow: hidden;
+  margin-bottom: 30px;
+  border-bottom: 4px solid #00d4ff;
+}
+
+.banner-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(0.4);
+}
+
+.banner-info {
+  position: absolute;
+  bottom: 30px;
+  left: 40px;
+}
+
+.status-badge {
+  background: #ff0055;
+  padding: 5px 15px;
+  border-radius: 5px;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  margin-bottom: 15px;
+  display: inline-block;
+}
+
+.banner-info h1 {
+  font-size: 3rem;
+  font-family: 'Orbitron', sans-serif;
+  margin: 10px 0;
+  text-shadow: 0 0 15px rgba(0, 212, 255, 0.6);
+}
+
+.meta-info span {
+  margin-right: 20px;
+  color: #ccc;
+  font-size: 1.1rem;
+}
+
+/* 2. Content Grid (Main & Sidebar) */
+.content-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 30px;
+}
+
+.card {
+  background: #161b22;
+  border: 1px solid #30363d;
+  border-radius: 15px;
+  padding: 25px;
+}
+
+.description-card h3 {
+  color: #00d4ff;
+  margin-bottom: 15px;
+  border-left: 4px solid #00d4ff;
+  padding-left: 15px;
+}
+
+.description-card p {
+  line-height: 1.8;
+  color: #8b949e;
+}
+
+/* Action Button Section */
+.action-section {
+  margin-top: 30px;
+}
+
+.btn-primary-glow {
+  width: 100%;
+  padding: 18px;
+  background: linear-gradient(90deg, #00d4ff, #0055ff);
+  border: none;
+  border-radius: 10px;
+  color: white;
+  font-weight: bold;
+  font-family: 'Orbitron', sans-serif;
+  cursor: pointer;
+  transition: 0.3s;
+  font-size: 1.2rem;
+}
+
+.btn-primary-glow:hover {
+  box-shadow: 0 0 25px rgba(0, 212, 255, 0.5);
+  transform: scale(1.02);
+}
+
+.joined-card {
+  display: flex;
+  align-items: center;
+  background: rgba(0, 255, 136, 0.1);
+  border: 1px solid #00ff88;
+  padding: 20px;
+  border-radius: 10px;
+  color: #00ff88;
+}
+
+/* 3. Sidebar Participants */
+.sidebar-participants h3 {
+  font-size: 1.1rem;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+}
+
+.participants-scroll {
+  max-height: 500px;
+  overflow-y: auto;
+  padding-right: 10px;
+}
+
+.team-sidebar-card {
+  background: #0d1117;
+  border-radius: 10px;
+  padding: 15px;
+  margin-bottom: 15px;
+}
+
+.team-sidebar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #30363d;
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+}
+
+.team-title { font-weight: bold; color: #ff0055; }
+.count-badge { background: #30363d; padding: 2px 8px; border-radius: 10px; font-size: 0.8rem; }
+
+.member-row-minimal {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 5px;
+  font-size: 0.9rem;
+  color: #8b949e;
+}
+
+.member-dot { width: 6px; height: 6px; background: #00d4ff; border-radius: 50%; }
+
+/* 4. Modal (Team Registration) */
+.modal-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0, 0, 0, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+}
+
+.modal-content-card {
+  background: #161b22;
+  width: 90%;
+  max-width: 500px;
+  padding: 40px;
+  border-radius: 20px;
+  border: 1px solid #00d4ff;
+  box-shadow: 0 0 40px rgba(0, 212, 255, 0.2);
+}
+
+.input-group { margin-bottom: 20px; }
+.input-group label { display: block; margin-bottom: 8px; color: #8b949e; }
+.input-group input {
+  width: 100%;
+  padding: 12px;
+  background: #0d1117;
+  border: 1px solid #30363d;
+  border-radius: 5px;
+  color: white;
+}
+
+.row-add { display: flex; gap: 10px; }
+.row-add button {
+  background: #00d4ff;
+  border: none;
+  padding: 0 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.email-chip {
+  background: #30363d;
+  display: inline-block;
+  padding: 5px 12px;
+  border-radius: 20px;
+  margin: 5px;
+  font-size: 0.85rem;
+}
+
+.email-chip span {
+  margin-left: 8px;
+  cursor: pointer;
+  color: #ff0055;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+  margin-top: 30px;
+}
+
+.btn-cancel { background: transparent; border: none; color: #8b949e; cursor: pointer; }
+.btn-confirm {
+  background: #ff0055;
+  border: none;
+  padding: 10px 25px;
+  border-radius: 5px;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.btn-confirm:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* Scrollbar Style */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: #0d1117; }
+::-webkit-scrollbar-thumb { background: #30363d; border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: #00d4ff; }

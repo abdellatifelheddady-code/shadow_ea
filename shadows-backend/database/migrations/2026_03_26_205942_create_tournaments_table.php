@@ -16,9 +16,13 @@ return new class extends Migration
              $table->string('title');
         $table->text('description');
         $table->string('game');
+         $table->enum('type', ['solo', 'squad']);
         $table->date('date');
         $table->foreignId('user_id')->constrained()->onDelete('cascade');
-        $table->boolean('is_approved')->default(false); 
+        $table->boolean('is_approved')->default(false);
+        $table->string('image')->nullable();
+
+        $table->integer('team_size')->nullable();
             $table->timestamps();
         });
     }

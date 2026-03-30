@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use Database\Seeders\TeamSeeder;
+use Database\Seeders\TournamentRegistrationSeeder;
 use Database\Seeders\TournamentSeeder;
 use Database\Seeders\UserSeeder;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -22,14 +24,19 @@ class DatabaseSeeder extends Seeder
         // Seed users via dedicated seeder.
         $this->call(UserSeeder::class);
 
-        // Create one additional test user for tournaments and run tournament seeder.
+        // Seed tournaments (needs users).
+        $this->call(TournamentSeeder::class);
+
+        // Seed teams (needs users for captains).
+        $this->call(TeamSeeder::class);
+
+        // Seed registrations (needs tournaments, users, teams).
+        $this->call(TournamentRegistrationSeeder::class);
+
+        // Create one additional test user if needed.
         $user = User::factory()->create([
             'name' => 'Test User',
             'email' => 'test@example.com',
         ]);
-
-        if ($user) {
-            $this->call(TournamentSeeder::class);
-        }
     }
 }
