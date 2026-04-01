@@ -17,9 +17,11 @@ return new class extends Migration
         $table->text('description');
         $table->string('game');
          $table->enum('type', ['solo', 'squad']);
+          $table->enum('system_type', ['chat_only', 'points'])->default('chat_only');
         $table->date('date');
         $table->foreignId('user_id')->constrained()->onDelete('cascade');
         $table->boolean('is_approved')->default(false);
+
         $table->string('image')->nullable();
 
         $table->integer('team_size')->nullable();

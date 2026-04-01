@@ -9,7 +9,7 @@ use App\Models\TournamentRegistration;
 use App\Models\Team;
 use App\Models\User;
 use App\Models\Message; // تأكد بلي درتي ليها Import لفوق
-
+use App\Models\TournamentResult;
 class TournamentController extends Controller
 {
     // get all tournaments (with participants)
@@ -48,8 +48,9 @@ class TournamentController extends Controller
         'title' => 'required|string|max:255',
         'description' => 'nullable|string',
         'game' => 'required|string',
-        'date' => 'required|date', // تأكد أن الـ Validation موجود
+        'date' => 'required|date',
         'type' => 'required|in:solo,squad',
+        'system_type' => 'required|in:chat_only,points', // <--- زيادة الـ Validation
         'team_size' => 'required_if:type,squad|integer|min:2',
         'image' => 'required|image|mimes:jpg,jpeg,png|max:2048',
     ]);
@@ -61,8 +62,9 @@ class TournamentController extends Controller
         'description' => $data['description'] ?? null,
         'image' => $path,
         'game' => $data['game'],
-        'date' => $data['date'], // <--- هاد السطر هو اللي كان ناقصك
+        'date' => $data['date'],
         'type' => $data['type'],
+        'system_type' => $data['system_type'], // <--- حفظ النوع الجديد
         'team_size' => $data['type'] === 'squad' ? $data['team_size'] : null,
         'user_id' => auth()->id(),
         'is_approved' => false,
@@ -70,7 +72,6 @@ class TournamentController extends Controller
 
     return response()->json($tournament, 201);
 }
-
 
 
 public function approve($id)
@@ -113,16 +114,16 @@ public function destroy($id) {
     return response()->json(['message' => 'Tournament deleted']);
 }
 
-         public function register($id, Request $request) {
+       public function register($id, Request $request) {
     $tournament = Tournament::findOrFail($id);
     $user = auth()->user();
 
-    // تشيك واش ديجا مسجل
+    // 1. تشيك واش الكابتن ديجا مسجل
     $alreadyJoined = TournamentRegistration::where('tournament_id', $id)
                         ->where('user_id', $user->id)
                         ->exists();
     if ($alreadyJoined) {
-        return response()->json(['message' => 'You are already registered!'], 400);
+        return response()->json(['message' => 'You are already registered in this tournament!'], 400);
     }
 
     if ($tournament->type === 'solo') {
@@ -133,30 +134,43 @@ public function destroy($id) {
         ]);
         return response()->json(['message' => 'Joined successfully as Solo!']);
     } else {
-        // الـ Squad Logic
+        // 2. الـ Squad Logic
+
+        // تعديل: حيدنا unique:teams,name وزدنا يدويًا التشييك وسط البطولة
         $request->validate([
-            'team_name' => 'required|string|unique:teams,name',
+            'team_name' => 'required|string|max:255',
             'teammates' => 'required|array|min:'.($tournament->team_size - 1),
             'teammates.*' => 'email|exists:users,email'
         ]);
 
-        // 1. إنشاء الفريق
+        // تشيك: واش هاد السمية مستعملة ديجا فـ هاد البطولة بالضبط؟
+        $isNameTakenInTournament = TournamentRegistration::where('tournament_id', $id)
+            ->whereHas('team', function($query) use ($request) {
+                $query->where('name', $request->team_name);
+            })->exists();
+
+        if ($isNameTakenInTournament) {
+            return response()->json(['message' => 'This team name is already taken in THIS tournament. Choose another name!'], 422);
+        }
+
+        // 3. إنشاء الفريق (بما أننا حيدنا الـ Unique من المايغريشن، غيدوز بسلام)
         $team = Team::create([
             'name' => $request->team_name,
             'captain_id' => $user->id
         ]);
 
-        // 2. إضافة الكابتن
+        // 4. إضافة الكابتن
         TournamentRegistration::create([
             'tournament_id' => $id,
             'user_id' => $user->id,
             'team_id' => $team->id
         ]);
 
-        // 3. إضافة الصحاب
+        // 5. إضافة الصحاب مع تشيك واش مسجلين ديجا
         foreach ($request->teammates as $email) {
             $member = User::where('email', $email)->first();
-            // تشيك واش هاد الصديق ديجا مسجل فالبطولة مع فريق آخر
+
+            // تشيك واش هاد الصديق ديجا مسجل فالبطولة (سواء صولو ولا مع فريق آخر)
             $isMemberBusy = TournamentRegistration::where('tournament_id', $id)
                             ->where('user_id', $member->id)
                             ->exists();
@@ -274,5 +288,39 @@ public function sendMessage(Request $request, $id) {
     ]);
 
     return response()->json($message->load('user:id,name'), 201);
+}
+public function getLeaderboard($id) {
+    $results = TournamentResult::where('tournament_id', $id)
+        ->with('user:id,name')
+        ->orderBy('total_points', 'desc')
+        ->get();
+    return response()->json($results);
+}
+
+// إدخال النقط (خاص بـ Organizer)
+public function updatePoints(Request $request, $id) {
+    $tournament = Tournament::findOrFail($id);
+
+    // تشيك واش هاد المستخدم هو اللي كريكريا البطولة
+    if (auth()->id() !== $tournament->user_id) {
+        return response()->json(['message' => 'Only the organizer can update points!'], 403);
+    }
+
+    $request->validate([
+        'user_id' => 'required|exists:users,id',
+        'rank_points' => 'required|integer',
+        'kill_points' => 'required|integer',
+    ]);
+
+    $result = TournamentResult::updateOrCreate(
+        ['tournament_id' => $id, 'user_id' => $request->user_id],
+        [
+            'rank_points' => $request->rank_points,
+            'kill_points' => $request->kill_points,
+            'total_points' => $request->rank_points + $request->kill_points
+        ]
+    );
+
+    return response()->json(['message' => 'Points updated successfully!', 'data' => $result]);
 }
 }

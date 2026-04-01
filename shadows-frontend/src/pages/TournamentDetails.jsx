@@ -2,6 +2,7 @@ import { useEffect, useState, useCallback } from "react";
 import { useParams } from "react-router-dom";
 import api from "../api";
 import TournamentChat from "../components/TournamentChat";
+import TournamentLeaderboard from "../components/TournamentLeaderboard"; // الكومبوننت الجديد
 import "../style/tournamentsDetails.css";
 
 export default function TournamentDetails() {
@@ -13,6 +14,9 @@ export default function TournamentDetails() {
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
+  
+  // State للتبديل بين الشات والترتيب
+  const [activeTab, setActiveTab] = useState("chat");
 
   // States ديال الـ Squad
   const [teamName, setTeamName] = useState("");
@@ -20,7 +24,6 @@ export default function TournamentDetails() {
   const [teammates, setTeammates] = useState([]);
   const [error, setError] = useState("");
 
-  // دالة جلب البيانات معزولة باش نقدرو نعيطو ليها فـ أي وقت
   const initData = useCallback(async () => {
     try {
       setLoading(true);
@@ -49,7 +52,46 @@ export default function TournamentDetails() {
     initData();
   }, [initData]);
 
-  // --- دالة عرض المشاركين مجمعين حسب الفريق ---
+  // واش المستخدم الحالي هو منظم البطولة؟
+  const isOrganizer = currentUser?.id === tournament?.user_id;
+
+  const addTeammate = () => {
+    setError("");
+    if (!teammateEmail) return;
+    if (currentUser && teammateEmail === currentUser.email) {
+      setError("You are the captain!"); return;
+    }
+    if (teammates.includes(teammateEmail)) {
+      setError("Already added."); return;
+    }
+    if (teammates.length < (tournament?.team_size - 1)) {
+      setTeammates([...teammates, teammateEmail]);
+      setTeammateEmail("");
+    } else {
+      setError(`Max ${tournament?.team_size} players!`);
+    }
+  };
+
+  const handleJoin = async () => {
+    if (!currentUser) {
+      alert("Please login first");
+      return;
+    }
+    setError("");
+    try {
+      const payload = tournament.type === "squad" 
+        ? { team_name: teamName, teammates: teammates } 
+        : {};
+      
+      await api.post(`/tournaments/${id}/register`, payload);
+      alert("Registration Successful!");
+      setShowModal(false);
+      initData(); 
+    } catch (err) {
+      setError(err.response?.data?.message || "Error during registration");
+    }
+  };
+
   const renderParticipants = () => {
     const participants = tournament?.participants || [];
     if (participants.length === 0) return <p className="empty-msg">No players registered yet.</p>;
@@ -84,45 +126,6 @@ export default function TournamentDetails() {
     );
   };
 
-  const addTeammate = () => {
-    setError("");
-    if (!teammateEmail) return;
-    if (currentUser && teammateEmail === currentUser.email) {
-      setError("You are the captain!"); return;
-    }
-    if (teammates.includes(teammateEmail)) {
-      setError("Already added."); return;
-    }
-    if (teammates.length < (tournament?.team_size - 1)) {
-      setTeammates([...teammates, teammateEmail]);
-      setTeammateEmail("");
-    } else {
-      setError(`Max ${tournament?.team_size} players!`);
-    }
-  };
-
-  const handleJoin = async () => {
-    if (!currentUser) {
-      alert("Please login first");
-      return;
-    }
-    setError("");
-    try {
-      const payload = tournament.type === "squad" 
-        ? { team_name: teamName, teammates: teammates } 
-        : {};
-      
-      await api.post(`/tournaments/${id}/register`, payload);
-      alert("Registration Successful!");
-      setShowModal(false);
-      
-      // تحديث البيانات بلا Refresh
-      initData(); 
-    } catch (err) {
-      setError(err.response?.data?.message || "Error during registration");
-    }
-  };
-
   if (loading || !tournament) return <div className="loader">Entering Arena...</div>;
 
   return (
@@ -141,12 +144,12 @@ export default function TournamentDetails() {
             <div className="meta-info">
               <span>📅 {tournament.date}</span>
               <span>🎮 {tournament.game}</span>
+              <span className="system-type-tag">⚙️ {tournament.system_type === 'points' ? 'Points System' : 'Chat Only'}</span>
             </div>
           </div>
         </div>
 
         <div className="content-grid">
-          {/* Main Content */}
           <div className="main-info">
             <div className="card description-card">
               <h3>Tournament Rules & Description</h3>
@@ -154,36 +157,55 @@ export default function TournamentDetails() {
             </div>
 
             <div className="action-section">
-              {isJoined ? (
-                <div className="joined-card">
-                  <span className="icon">✅</span>
-                  <div className="text">
-                    <h4>You're In!</h4>
-                    <p>Get ready for the match.</p>
-                  </div>
-                </div>
-              ) : (
+              {!isJoined ? (
                 <button 
                   className="btn-primary-glow" 
                   onClick={() => tournament.type === "solo" ? handleJoin() : setShowModal(true)}
                 >
                   {tournament.type === "solo" ? "JOIN AS SOLO" : "REGISTER YOUR TEAM"}
                 </button>
+              ) : (
+                <div className="joined-badge-container">
+                    <span className="joined-status-text">✅ You are a Participant</span>
+                </div>
               )}
             </div>
 
-            {/* Chat Section - كيبان غير للمشاركين */}
-            {isJoined && (
-              <div className="chat-container-wrapper">
-                <div className="card chat-card">
-                  <h3>💬 Live Tournament Chat</h3>
-                  <TournamentChat tournamentId={id} currentUser={currentUser} />
+            {/* نظام الـ Tabs كيبان غير للمشاركين أو المنظم */}
+            {(isJoined || isOrganizer) && (
+              <div className="tournament-interactive-area">
+                <div className="tabs-menu">
+                  <button 
+                    className={`tab-btn ${activeTab === "chat" ? "active" : ""}`} 
+                    onClick={() => setActiveTab("chat")}
+                  >
+                    💬 Chat
+                  </button>
+                  {tournament.system_type === "points" && (
+                    <button 
+                      className={`tab-btn ${activeTab === "leaderboard" ? "active" : ""}`} 
+                      onClick={() => setActiveTab("leaderboard")}
+                    >
+                      📊 Leaderboard
+                    </button>
+                  )}
+                </div>
+
+                <div className="tab-content card">
+                  {activeTab === "chat" ? (
+                    <TournamentChat tournamentId={id} currentUser={currentUser} />
+                  ) : (
+                    <TournamentLeaderboard 
+                      tournamentId={id} 
+                      isOrganizer={isOrganizer} 
+                      participants={tournament.participants || []} 
+                    />
+                  )}
                 </div>
               </div>
             )}
           </div>
 
-          {/* Sidebar - Participants List */}
           <aside className="sidebar-participants">
             <div className="card participants-card">
               <h3>Registered Units</h3>

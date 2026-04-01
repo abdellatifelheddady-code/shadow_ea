@@ -37,7 +37,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/my-tournaments', [TournamentController::class, 'myTournaments']);
     Route::get('/joined-tournaments', [TournamentController::class, 'joinedTournaments']);
 
-    
+
     Route::get('/users/search', [TournamentController::class, 'searchUser']);
 
 });
@@ -69,3 +69,5 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/tournaments/{id}/messages', [TournamentController::class, 'getMessages']);
     Route::post('/tournaments/{id}/messages', [TournamentController::class, 'sendMessage']);
 });
+Route::get('/tournaments/{id}/leaderboard', [TournamentController::class, 'getLeaderboard']);
+Route::post('/tournaments/{id}/points', [TournamentController::class, 'updatePoints']);

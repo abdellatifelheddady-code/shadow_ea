@@ -1,92 +1,178 @@
-﻿/* create.css */
-.create-form {
-  max-width: 600px;
-  margin: 40px auto;
-  background: #161b22;
-  padding: 40px;
-  border-radius: 20px;
-  border: 1px solid #30363d;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+﻿/* --- create.css --- */
+
+.create-tournament-page {
+  background-color: #05070a;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  color: #e6edf3;
 }
 
-h2 {
-  text-align: center;
-  font-family: 'Orbitron', sans-serif;
-  color: #00d4ff;
-  margin-bottom: 10px;
-}
-
-.create-form input, 
-.create-form textarea, 
-.create-form select {
-  width: 100%;
-  padding: 12px 15px;
-  margin-bottom: 20px;
+/* Form Card Container */
+.form-card {
   background: #0d1117;
-  border: 1px solid #30363d;
-  border-radius: 8px;
-  color: white;
-  font-size: 1rem;
-  outline: none;
-  transition: 0.3s;
+  border: 1px solid #21262d;
+  width: 100%;
+  max-width: 650px;
+  padding: 40px;
+  border-radius: 24px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7);
+  position: relative;
+  overflow: hidden;
 }
 
-.create-form input:focus, 
-.create-form textarea:focus {
-  border-color: #00d4ff;
-  box-shadow: 0 0 8px rgba(0, 212, 255, 0.3);
+/* Dek l-khet l-m3red l-foq dial l-glow */
+.form-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(90deg, #00d4ff, #ff0055);
 }
 
-.create-form textarea {
-  height: 120px;
-  resize: vertical;
+.form-card h2 {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1.8rem;
+  margin-bottom: 30px;
+  text-align: center;
+  letter-spacing: 2px;
+  color: #fff;
+  text-transform: uppercase;
+}
+
+/* Grid Layout for Form Groups */
+.create-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+/* Bach Description o Buttons i-khdo 2 columns */
+.form-group:nth-child(1), /* Title */
+.form-group:nth-child(6), /* System Type */
+.form-group:nth-child(7), /* Description */
+.form-group:nth-child(8), /* Image */
+.submit-btn {
+  grid-column: span 2;
 }
 
 .form-group {
-  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 .form-group label {
-  display: block;
-  margin-bottom: 10px;
+  font-size: 0.85rem;
+  font-weight: 600;
   color: #8b949e;
-  font-weight: bold;
-  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
-/* Style dial l-file input */
-input[type="file"] {
-  padding: 10px;
+/* Input Fields Styling */
+.form-group input, 
+.form-group select, 
+.form-group textarea {
+  background: #161b22;
+  border: 1px solid #30363d;
+  border-radius: 10px;
+  padding: 12px 15px;
+  color: #fff;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+  outline: none;
+}
+
+.form-group input:focus, 
+.form-group select:focus, 
+.form-group textarea:focus {
+  border-color: #00d4ff;
+  box-shadow: 0 0 8px rgba(0, 212, 255, 0.2);
   background: #1c2128;
-  border: 1px dashed #00d4ff;
+}
+
+.form-group textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+/* Helper Text Style */
+.helper-text {
+  font-size: 0.8rem;
+  color: #58a6ff;
+  margin-top: 5px;
+  font-style: italic;
+  opacity: 0.8;
+}
+
+/* Custom File Input Styling */
+.file-input-wrapper {
+  position: relative;
+  border: 2px dashed #30363d;
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+  transition: 0.3s;
+  background: rgba(22, 27, 34, 0.5);
+}
+
+.file-input-wrapper:hover {
+  border-color: #ff0055;
+  background: rgba(255, 0, 85, 0.05);
+}
+
+.file-input-wrapper input[type="file"] {
+  width: 100%;
   cursor: pointer;
 }
 
-.create-form button[type="submit"] {
-  width: 100%;
-  padding: 15px;
-  background: linear-gradient(90deg, #ff0055, #ff4d00);
+/* Submit Button with Glow */
+.submit-btn {
+  margin-top: 20px;
+  padding: 16px;
+  background: linear-gradient(90deg, #00d4ff, #008fb3);
   border: none;
-  border-radius: 10px;
-  color: white;
-  font-weight: bold;
-  font-family: 'Orbitron', sans-serif;
-  font-size: 1.1rem;
+  border-radius: 12px;
+  color: #000;
+  font-weight: 800;
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
   cursor: pointer;
   transition: 0.3s;
-  text-transform: uppercase;
-  margin-top: 10px;
+  box-shadow: 0 4px 15px rgba(0, 212, 255, 0.3);
 }
 
-.create-form button[type="submit"]:hover {
-  box-shadow: 0 0 20px rgba(255, 0, 85, 0.5);
+.submit-btn:hover {
   transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 212, 255, 0.5);
+  background: #fff; /* White flash on hover */
+}
+
+/* Squad Team Size Animation */
+.form-group {
+  animation: fadeIn 0.4s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 /* Responsive */
-@media (max-width: 768px) {
+@media (max-width: 600px) {
   .create-form {
-    padding: 20px;
-    margin: 20px;
+    grid-template-columns: 1fr;
+  }
+  .form-group {
+    grid-column: span 1 !important;
+  }
+  .form-card {
+    padding: 25px;
   }
 }

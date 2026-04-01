@@ -250,3 +250,218 @@
   transform: translateY(-3px);
   box-shadow: 0 8px 25px rgba(255, 0, 85, 0.5);
 }
+/* --- Modal Overlay (الخلفية الضبابية) --- */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(8px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    padding: 20px;
+}
+
+/* --- Modal Card (الكارط ديال التسجيل) --- */
+.modal-content-card {
+    background: #1a1a2e;
+    border: 2px solid #00fff7;
+    border-radius: 15px;
+    width: 100%;
+    max-width: 500px;
+    padding: 30px;
+    box-shadow: 0 0 30px rgba(0, 255, 247, 0.2);
+    animation: modalSlideUp 0.3s ease-out;
+}
+
+@keyframes modalSlideUp {
+    from { transform: translateY(30px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.modal-content-card h2 {
+    color: #fff;
+    margin-bottom: 25px;
+    text-align: center;
+    font-size: 1.8rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+/* --- Input Groups --- */
+.input-group {
+    margin-bottom: 20px;
+}
+
+.input-group label {
+    display: block;
+    color: #00fff7;
+    margin-bottom: 8px;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.input-group input {
+    width: 100%;
+    background: #16213e;
+    border: 1px solid #333;
+    padding: 12px;
+    border-radius: 8px;
+    color: white;
+    outline: none;
+    transition: 0.3s;
+}
+
+.input-group input:focus {
+    border-color: #00fff7;
+    box-shadow: 0 0 10px rgba(0, 255, 247, 0.1);
+}
+
+/* --- Row for Add Teammate --- */
+.row-add {
+    display: flex;
+    gap: 10px;
+}
+
+.row-add button {
+    background: #0f3460;
+    color: #00fff7;
+    border: 1px solid #00fff7;
+    padding: 0 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.row-add button:hover {
+    background: #00fff7;
+    color: #1a1a2e;
+}
+
+/* --- Chips (Emails List) --- */
+.invited-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 15px;
+    min-height: 40px;
+}
+
+.email-chip {
+    background: rgba(0, 255, 247, 0.1);
+    border: 1px solid rgba(0, 255, 247, 0.3);
+    color: #fff;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.email-chip span {
+    cursor: pointer;
+    color: #ff4d4d;
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+/* --- Footer Buttons --- */
+.modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    margin-top: 30px;
+    border-top: 1px solid #333;
+    padding-top: 20px;
+}
+
+.btn-cancel {
+    background: transparent;
+    border: none;
+    color: #aaa;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.btn-confirm {
+    background: #00fff7;
+    color: #1a1a2e;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-confirm:disabled {
+    background: #444;
+    color: #777;
+    cursor: not-allowed;
+}
+
+.btn-confirm:not(:disabled):hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 20px rgba(0, 255, 247, 0.4);
+}
+
+/* --- Alert Error --- */
+.alert-error {
+    background: rgba(255, 77, 77, 0.1);
+    color: #ff4d4d;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    border-left: 4px solid #ff4d4d;
+    font-size: 0.9rem;
+}
+.tabs-menu {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #333;
+}
+
+.tabs-menu button {
+    background: none;
+    border: none;
+    color: #aaa;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+.tabs-menu button.active {
+    color: #00fff7;
+    border-bottom: 2px solid #00fff7;
+}
+
+.leaderboard-table {
+    width: 100%;
+    margin-top: 20px;
+    border-collapse: collapse;
+    background: #1a1a2e;
+    border-radius: 8px;
+}
+
+.leaderboard-table th, .leaderboard-table td {
+    padding: 15px;
+    text-align: center;
+    border-bottom: 1px solid #333;
+}
+
+.admin-points-form {
+    display: flex;
+    gap: 10px;
+    padding: 20px;
+    background: #16213e;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
