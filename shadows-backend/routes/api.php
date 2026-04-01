@@ -25,20 +25,19 @@ Route::get('/tournaments/{id}', [TournamentController::class, 'show']);
 */
 Route::middleware('auth:sanctum')->group(function () {
 
-    // بيانات المستخدم الحالي
     Route::get('/user', function (Request $request) {
         return $request->user();
     });
 
-    // العمليات على البطولات
+
     Route::post('/tournaments', [TournamentController::class, 'store']);
     Route::post('/tournaments/{id}/register', [TournamentController::class, 'register']);
 
-    // تتبع البطولات الخاصة بالمستخدم
+
     Route::get('/my-tournaments', [TournamentController::class, 'myTournaments']);
     Route::get('/joined-tournaments', [TournamentController::class, 'joinedTournaments']);
 
-    // البحث
+    
     Route::get('/users/search', [TournamentController::class, 'searchUser']);
 
 });
@@ -52,7 +51,7 @@ Route::middleware('auth:sanctum')->group(function () {
 // routes/api.php
 Route::middleware('auth:sanctum')->prefix('admin')->group(function () {
     // هادي اللي كتجيب Pending
-    
+
 
     // هادي اللي كتجيب الكل
     Route::get('/all-tournaments', [TournamentController::class, 'allTournaments']);
@@ -62,4 +61,11 @@ Route::middleware('auth:sanctum')->prefix('admin')->group(function () {
 Route::get('/pending-tournaments', [TournamentController::class, 'pending']);
     // هادي ديال Delete
     Route::delete('/tournaments/{id}', [TournamentController::class, 'destroy']);
+});
+Route::middleware('auth:sanctum')->group(function () {
+    // ... الـ routes اللي عندك ديجا ...
+
+    // شات البطولة
+    Route::get('/tournaments/{id}/messages', [TournamentController::class, 'getMessages']);
+    Route::post('/tournaments/{id}/messages', [TournamentController::class, 'sendMessage']);
 });

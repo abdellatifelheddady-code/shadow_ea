@@ -1,10 +1,9 @@
-﻿/* tournamentsDetails.css */
-
+﻿/* --- Global Theme --- */
 .tournament-detail {
-  background: #0b0e14;
-  min-height: 100vh;
-  padding: 20px 0;
-  color: white;
+  background-color: #05070a;
+  color: #e6edf3;
+  font-family: 'Inter', -apple-system, sans-serif;
+  padding-bottom: 50px;
 }
 
 .container {
@@ -13,235 +12,241 @@
   padding: 0 20px;
 }
 
-/* 1. Banner Header */
+/* --- Banner Styling --- */
 .tournament-banner-card {
   position: relative;
-  height: 350px;
+  height: 300px;
   border-radius: 20px;
   overflow: hidden;
-  margin-bottom: 30px;
-  border-bottom: 4px solid #00d4ff;
+  margin: 30px 0;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
 }
 
 .banner-image {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  filter: brightness(0.4);
+  filter: brightness(0.6);
 }
 
 .banner-info {
   position: absolute;
-  bottom: 30px;
-  left: 40px;
-}
-
-.status-badge {
-  background: #ff0055;
-  padding: 5px 15px;
-  border-radius: 5px;
-  font-weight: bold;
-  text-transform: uppercase;
-  font-size: 0.8rem;
-  margin-bottom: 15px;
-  display: inline-block;
+  bottom: 0;
+  left: 0;
+  padding: 40px;
+  background: linear-gradient(to top, rgba(5, 7, 10, 0.9), transparent);
+  width: 100%;
 }
 
 .banner-info h1 {
-  font-size: 3rem;
-  font-family: 'Orbitron', sans-serif;
+  font-size: 2.5rem;
   margin: 10px 0;
-  text-shadow: 0 0 15px rgba(0, 212, 255, 0.6);
+  font-weight: 800;
+  letter-spacing: -1px;
 }
 
-.meta-info span {
-  margin-right: 20px;
-  color: #ccc;
-  font-size: 1.1rem;
-}
-
-/* 2. Content Grid (Main & Sidebar) */
-.content-grid {
-  display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: 30px;
-}
-
-.card {
-  background: #161b22;
-  border: 1px solid #30363d;
-  border-radius: 15px;
-  padding: 25px;
-}
-
-.description-card h3 {
-  color: #00d4ff;
-  margin-bottom: 15px;
-  border-left: 4px solid #00d4ff;
-  padding-left: 15px;
-}
-
-.description-card p {
-  line-height: 1.8;
-  color: #8b949e;
-}
-
-/* Action Button Section */
-.action-section {
-  margin-top: 30px;
-}
-
-.btn-primary-glow {
-  width: 100%;
-  padding: 18px;
-  background: linear-gradient(90deg, #00d4ff, #0055ff);
-  border: none;
-  border-radius: 10px;
-  color: white;
+.status-badge {
+  display: inline-block;
+  padding: 5px 15px;
+  border-radius: 6px;
+  font-size: 0.75rem;
   font-weight: bold;
-  font-family: 'Orbitron', sans-serif;
-  cursor: pointer;
-  transition: 0.3s;
-  font-size: 1.2rem;
-}
-
-.btn-primary-glow:hover {
-  box-shadow: 0 0 25px rgba(0, 212, 255, 0.5);
-  transform: scale(1.02);
-}
-
-.joined-card {
-  display: flex;
-  align-items: center;
-  background: rgba(0, 255, 136, 0.1);
-  border: 1px solid #00ff88;
-  padding: 20px;
-  border-radius: 10px;
-  color: #00ff88;
-}
-
-/* 3. Sidebar Participants */
-.sidebar-participants h3 {
-  font-size: 1.1rem;
-  margin-bottom: 20px;
+  background: #ff0055;
   text-transform: uppercase;
 }
 
-.participants-scroll {
-  max-height: 500px;
-  overflow-y: auto;
-  padding-right: 10px;
+/* --- Content Layout --- */
+.content-grid {
+  display: grid;
+  grid-template-columns: 1fr 350px;
+  gap: 25px;
 }
 
-.team-sidebar-card {
+.card {
   background: #0d1117;
-  border-radius: 10px;
-  padding: 15px;
-  margin-bottom: 15px;
+  border: 1px solid #21262d;
+  border-radius: 16px;
+  padding: 20px;
 }
 
-.team-sidebar-header {
+/* --- Chat Section Styling --- */
+.chat-container {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: 1px solid #30363d;
-  padding-bottom: 10px;
-  margin-bottom: 10px;
+  flex-direction: column;
+  height: 600px;
+  background: #0d1117;
+  border-radius: 16px;
+  overflow: hidden;
 }
 
-.team-title { font-weight: bold; color: #ff0055; }
-.count-badge { background: #30363d; padding: 2px 8px; border-radius: 10px; font-size: 0.8rem; }
+.chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  background: radial-gradient(circle at center, #161b22 0%, #0d1117 100%);
+}
+
+.message {
+  display: flex;
+  flex-direction: column;
+  max-width: 80%;
+}
+
+.message.own { align-self: flex-end; }
+.message.other { align-self: flex-start; }
+
+.msg-bubble {
+  padding: 12px 16px;
+  border-radius: 15px;
+  position: relative;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+.own .msg-bubble {
+  background: linear-gradient(135deg, #00d4ff, #008fb3);
+  color: #000;
+  border-bottom-right-radius: 2px;
+}
+
+.other .msg-bubble {
+  background: #21262d;
+  color: #fff;
+  border-bottom-left-radius: 2px;
+}
+
+.msg-info {
+  display: flex;
+  gap: 10px;
+  font-size: 0.75rem;
+  margin-bottom: 5px;
+  font-weight: 600;
+  opacity: 0.8;
+}
+
+/* --- Image Inside Chat (The Most Important Part) --- */
+.msg-image-wrapper {
+  margin-top: 8px;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  transition: transform 0.2s ease;
+  cursor: zoom-in;
+  max-width: 250px; /* Limit size for better look */
+}
+
+.msg-image-wrapper:hover {
+  transform: scale(1.02);
+  border-color: #00d4ff;
+}
+
+.chat-img {
+  width: 100%;
+  display: block;
+  object-fit: cover;
+  max-height: 200px;
+}
+
+/* --- Chat Input Area --- */
+.chat-input-area {
+  padding: 15px;
+  background: #161b22;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.input-wrapper {
+  flex: 1;
+  background: #0d1117;
+  border: 1px solid #30363d;
+  border-radius: 10px;
+  display: flex;
+  padding: 8px 15px;
+  align-items: center;
+}
+
+.input-wrapper input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: white;
+  outline: none;
+  font-size: 0.95rem;
+}
+
+.file-label {
+  cursor: pointer;
+  font-size: 1.2rem;
+  padding: 0 5px;
+  transition: 0.2s;
+}
+
+.file-label.attached { color: #00ff88; }
+
+.send-btn {
+  background: #00d4ff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.send-btn:hover:not(:disabled) {
+  background: #fff;
+  transform: translateY(-2px);
+}
+
+/* --- Participants Sidebar --- */
+.team-sidebar-card {
+  margin-bottom: 15px;
+  padding: 15px;
+  background: rgba(22, 27, 34, 0.6);
+  border-radius: 12px;
+  border-left: 4px solid #00d4ff;
+}
+
+.team-title {
+  color: #00d4ff;
+  font-weight: 800;
+  font-size: 0.9rem;
+}
 
 .member-row-minimal {
   display: flex;
   align-items: center;
-  gap: 10px;
-  margin-top: 5px;
-  font-size: 0.9rem;
-  color: #8b949e;
+  gap: 8px;
+  padding: 4px 0;
 }
 
-.member-dot { width: 6px; height: 6px; background: #00d4ff; border-radius: 50%; }
-
-/* 4. Modal (Team Registration) */
-.modal-overlay {
-  position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(0, 0, 0, 0.9);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 2000;
+.member-dot {
+  width: 6px;
+  height: 6px;
+  background: #00ff88;
+  border-radius: 50%;
+  box-shadow: 0 0 8px #00ff88;
 }
 
-.modal-content-card {
-  background: #161b22;
-  width: 90%;
-  max-width: 500px;
-  padding: 40px;
-  border-radius: 20px;
-  border: 1px solid #00d4ff;
-  box-shadow: 0 0 40px rgba(0, 212, 255, 0.2);
-}
-
-.input-group { margin-bottom: 20px; }
-.input-group label { display: block; margin-bottom: 8px; color: #8b949e; }
-.input-group input {
+/* --- Buttons --- */
+.btn-primary-glow {
   width: 100%;
-  padding: 12px;
-  background: #0d1117;
-  border: 1px solid #30363d;
-  border-radius: 5px;
-  color: white;
-}
-
-.row-add { display: flex; gap: 10px; }
-.row-add button {
-  background: #00d4ff;
+  padding: 15px;
+  background: linear-gradient(90deg, #ff0055, #ff4d00);
   border: none;
-  padding: 0 20px;
-  border-radius: 5px;
-  cursor: pointer;
-  font-weight: bold;
-}
-
-.email-chip {
-  background: #30363d;
-  display: inline-block;
-  padding: 5px 12px;
-  border-radius: 20px;
-  margin: 5px;
-  font-size: 0.85rem;
-}
-
-.email-chip span {
-  margin-left: 8px;
-  cursor: pointer;
-  color: #ff0055;
-}
-
-.modal-footer {
-  display: flex;
-  justify-content: flex-end;
-  gap: 15px;
-  margin-top: 30px;
-}
-
-.btn-cancel { background: transparent; border: none; color: #8b949e; cursor: pointer; }
-.btn-confirm {
-  background: #ff0055;
-  border: none;
-  padding: 10px 25px;
-  border-radius: 5px;
+  border-radius: 12px;
   color: white;
-  font-weight: bold;
+  font-weight: 800;
   cursor: pointer;
+  box-shadow: 0 5px 20px rgba(255, 0, 85, 0.3);
+  transition: 0.3s;
 }
 
-.btn-confirm:disabled { opacity: 0.5; cursor: not-allowed; }
-
-/* Scrollbar Style */
-::-webkit-scrollbar { width: 5px; }
-::-webkit-scrollbar-track { background: #0d1117; }
-::-webkit-scrollbar-thumb { background: #30363d; border-radius: 10px; }
-::-webkit-scrollbar-thumb:hover { background: #00d4ff; }
+.btn-primary-glow:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(255, 0, 85, 0.5);
+}

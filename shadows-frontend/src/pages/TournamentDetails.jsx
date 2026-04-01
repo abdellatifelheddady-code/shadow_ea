@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useParams } from "react-router-dom";
 import api from "../api";
+import TournamentChat from "../components/TournamentChat";
 import "../style/tournamentsDetails.css";
 
 export default function TournamentDetails() {
@@ -19,33 +20,34 @@ export default function TournamentDetails() {
   const [teammates, setTeammates] = useState([]);
   const [error, setError] = useState("");
 
-  useEffect(() => {
-    const initData = async () => {
+  // دالة جلب البيانات معزولة باش نقدرو نعيطو ليها فـ أي وقت
+  const initData = useCallback(async () => {
+    try {
+      setLoading(true);
+      
+      // 1. جلب بيانات البطولة
+      const res = await api.get(`/tournaments/${id}`);
+      setTournament(res.data.tournament);
+      setIsJoined(res.data.is_joined);
+
+      // 2. جلب بيانات المستخدم
       try {
-        setLoading(true);
-        
-        // 1. جلب بيانات البطولة (Public Route)
-        const res = await api.get(`/tournaments/${id}`);
-        setTournament(res.data.tournament);
-        setIsJoined(res.data.is_joined);
-
-        // 2. محاولة جلب المستخدم (Optional)
-        try {
-          const userRes = await api.get("/user");
-          setCurrentUser(userRes.data);
-        } catch (e) {
-          console.log("User not logged in or session expired.");
-        }
-
-      } catch (err) {
-        console.error("Error loading tournament:", err);
-      } finally {
-        setLoading(false);
+        const userRes = await api.get("/user");
+        setCurrentUser(userRes.data);
+      } catch (e) {
+        console.log("User not logged in.");
       }
-    };
 
-    initData();
+    } catch (err) {
+      console.error("Error loading tournament:", err);
+    } finally {
+      setLoading(false);
+    }
   }, [id]);
+
+  useEffect(() => {
+    initData();
+  }, [initData]);
 
   // --- دالة عرض المشاركين مجمعين حسب الفريق ---
   const renderParticipants = () => {
@@ -53,14 +55,9 @@ export default function TournamentDetails() {
     if (participants.length === 0) return <p className="empty-msg">No players registered yet.</p>;
 
     const groupedTeams = {};
-
     participants.forEach((player) => {
-      // كنستعملو team_name اللي صيفطنا من الـ Controller بـ transform
       const tName = player.team_name || "Solo Players";
-
-      if (!groupedTeams[tName]) {
-        groupedTeams[tName] = [];
-      }
+      if (!groupedTeams[tName]) groupedTeams[tName] = [];
       groupedTeams[tName].push(player);
     });
 
@@ -106,7 +103,7 @@ export default function TournamentDetails() {
 
   const handleJoin = async () => {
     if (!currentUser) {
-      alert("Please login to join the tournament");
+      alert("Please login first");
       return;
     }
     setError("");
@@ -118,7 +115,9 @@ export default function TournamentDetails() {
       await api.post(`/tournaments/${id}/register`, payload);
       alert("Registration Successful!");
       setShowModal(false);
-      window.location.reload(); // إعادة تحميل الصفحة لتحديث القائمة
+      
+      // تحديث البيانات بلا Refresh
+      initData(); 
     } catch (err) {
       setError(err.response?.data?.message || "Error during registration");
     }
@@ -172,6 +171,16 @@ export default function TournamentDetails() {
                 </button>
               )}
             </div>
+
+            {/* Chat Section - كيبان غير للمشاركين */}
+            {isJoined && (
+              <div className="chat-container-wrapper">
+                <div className="card chat-card">
+                  <h3>💬 Live Tournament Chat</h3>
+                  <TournamentChat tournamentId={id} currentUser={currentUser} />
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Sidebar - Participants List */}
@@ -212,7 +221,7 @@ export default function TournamentDetails() {
                   value={teammateEmail} 
                   onChange={(e) => setTeammateEmail(e.target.value)} 
                 />
-                <button onClick={addTeammate}>Add</button>
+                <button type="button" onClick={addTeammate}>Add</button>
               </div>
             </div>
 

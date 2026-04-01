@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use App\Models\TournamentRegistration;
 use App\Models\Team;
 use App\Models\User;
+use App\Models\Message; // تأكد بلي درتي ليها Import لفوق
+
 class TournamentController extends Controller
 {
     // get all tournaments (with participants)
@@ -111,42 +113,61 @@ public function destroy($id) {
     return response()->json(['message' => 'Tournament deleted']);
 }
 
-          public function register($id, Request $request) {
+         public function register($id, Request $request) {
     $tournament = Tournament::findOrFail($id);
     $user = auth()->user();
 
+    // تشيك واش ديجا مسجل
+    $alreadyJoined = TournamentRegistration::where('tournament_id', $id)
+                        ->where('user_id', $user->id)
+                        ->exists();
+    if ($alreadyJoined) {
+        return response()->json(['message' => 'You are already registered!'], 400);
+    }
+
     if ($tournament->type === 'solo') {
-        // ... كود السولو العادي
+        TournamentRegistration::create([
+            'tournament_id' => $id,
+            'user_id' => $user->id,
+            'team_id' => null
+        ]);
+        return response()->json(['message' => 'Joined successfully as Solo!']);
     } else {
-        // 1. Validation ديال اسم الفريق والـ Emails ديال الصحاب
+        // الـ Squad Logic
         $request->validate([
             'team_name' => 'required|string|unique:teams,name',
-            'teammates' => 'required|array|min:1', // على الأقل خاصو يزيد واحد
-            'teammates.*' => 'email|exists:users,email' // كاع الـ emails خاص يكونوا مسجلين في السيت
+            'teammates' => 'required|array|min:'.($tournament->team_size - 1),
+            'teammates.*' => 'email|exists:users,email'
         ]);
 
-        // 2. إنشاء الفريق
+        // 1. إنشاء الفريق
         $team = Team::create([
             'name' => $request->team_name,
             'captain_id' => $user->id
         ]);
 
-        // 3. إضافة القائد للبطولة
+        // 2. إضافة الكابتن
         TournamentRegistration::create([
             'tournament_id' => $id,
             'user_id' => $user->id,
             'team_id' => $team->id
         ]);
 
-        // 4. إضافة الصحاب (Teammates)
+        // 3. إضافة الصحاب
         foreach ($request->teammates as $email) {
             $member = User::where('email', $email)->first();
+            // تشيك واش هاد الصديق ديجا مسجل فالبطولة مع فريق آخر
+            $isMemberBusy = TournamentRegistration::where('tournament_id', $id)
+                            ->where('user_id', $member->id)
+                            ->exists();
 
-            TournamentRegistration::create([
-                'tournament_id' => $id,
-                'user_id' => $member->id,
-                'team_id' => $team->id
-            ]);
+            if(!$isMemberBusy) {
+                TournamentRegistration::create([
+                    'tournament_id' => $id,
+                    'user_id' => $member->id,
+                    'team_id' => $team->id
+                ]);
+            }
         }
 
         return response()->json(['message' => 'Squad registered successfully!']);
@@ -220,5 +241,38 @@ public function pending()
         // هادي غاتوريك الخطأ الحقيقي فـ Network Tab
         return response()->json(['error' => $e->getMessage()], 500);
     }
+}
+
+// جلب الرسائل
+
+public function getMessages($id) {
+    $messages = Message::where('tournament_id', $id)
+        ->with('user:id,name') // مهم باش تبان سمية اللي صيفط
+        ->orderBy('created_at', 'asc')
+        ->get();
+
+    return response()->json($messages);
+}
+
+// 2. صيفط ميساج (نص أو صورة سكرين شوت)
+public function sendMessage(Request $request, $id) {
+    $request->validate([
+        'content' => 'nullable|string',
+        'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048'
+    ]);
+
+    $imagePath = null;
+    if ($request->hasFile('image')) {
+        $imagePath = $request->file('image')->store('chat_images', 'public');
+    }
+
+    $message = Message::create([
+        'tournament_id' => $id,
+        'user_id' => auth()->id(),
+        'content' => $request->input('content'),
+        'image' => $imagePath
+    ]);
+
+    return response()->json($message->load('user:id,name'), 201);
 }
 }
