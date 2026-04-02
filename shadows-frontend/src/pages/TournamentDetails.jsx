@@ -2,7 +2,7 @@ import { useEffect, useState, useCallback } from "react";
 import { useParams } from "react-router-dom";
 import api from "../api";
 import TournamentChat from "../components/TournamentChat";
-import TournamentLeaderboard from "../components/TournamentLeaderboard"; // الكومبوننت الجديد
+import TournamentLeaderboard from "../components/TournamentLeaderboard";
 import "../style/tournamentsDetails.css";
 
 export default function TournamentDetails() {
@@ -14,7 +14,7 @@ export default function TournamentDetails() {
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
-  
+
   // State للتبديل بين الشات والترتيب
   const [activeTab, setActiveTab] = useState("chat");
 
@@ -27,20 +27,18 @@ export default function TournamentDetails() {
   const initData = useCallback(async () => {
     try {
       setLoading(true);
-      
       // 1. جلب بيانات البطولة
       const res = await api.get(`/tournaments/${id}`);
       setTournament(res.data.tournament);
       setIsJoined(res.data.is_joined);
 
-      // 2. جلب بيانات المستخدم
+      // 2. جلب بيانات المستخدم الحالي
       try {
         const userRes = await api.get("/user");
         setCurrentUser(userRes.data);
       } catch (e) {
         console.log("User not logged in.");
       }
-
     } catch (err) {
       console.error("Error loading tournament:", err);
     } finally {
@@ -52,25 +50,9 @@ export default function TournamentDetails() {
     initData();
   }, [initData]);
 
-  // واش المستخدم الحالي هو منظم البطولة؟
-  const isOrganizer = currentUser?.id === tournament?.user_id;
-
-  const addTeammate = () => {
-    setError("");
-    if (!teammateEmail) return;
-    if (currentUser && teammateEmail === currentUser.email) {
-      setError("You are the captain!"); return;
-    }
-    if (teammates.includes(teammateEmail)) {
-      setError("Already added."); return;
-    }
-    if (teammates.length < (tournament?.team_size - 1)) {
-      setTeammates([...teammates, teammateEmail]);
-      setTeammateEmail("");
-    } else {
-      setError(`Max ${tournament?.team_size} players!`);
-    }
-  };
+  // --- التحقق من الصلاحيات ---
+  // المنظم هو لي كريكريا البطولة (user_id ف جدول tournaments كيتطابق مع id ديال المستخدم)
+  const isOrganizer = currentUser && tournament && currentUser.id === tournament.user_id;
 
   const handleJoin = async () => {
     if (!currentUser) {
@@ -89,6 +71,23 @@ export default function TournamentDetails() {
       initData(); 
     } catch (err) {
       setError(err.response?.data?.message || "Error during registration");
+    }
+  };
+
+  const addTeammate = () => {
+    setError("");
+    if (!teammateEmail) return;
+    if (currentUser && teammateEmail === currentUser.email) {
+      setError("You are the captain!"); return;
+    }
+    if (teammates.includes(teammateEmail)) {
+      setError("Already added."); return;
+    }
+    if (teammates.length < (tournament?.team_size - 1)) {
+      setTeammates([...teammates, teammateEmail]);
+      setTeammateEmail("");
+    } else {
+      setError(`Max ${tournament?.team_size} players!`);
     }
   };
 
@@ -131,7 +130,7 @@ export default function TournamentDetails() {
   return (
     <div className="page tournament-detail">
       <div className="container">
-        {/* Header Banner */}
+        {/* Banner Section */}
         <div className="tournament-banner-card">
           <img 
             src={tournament.image ? `http://localhost:8000/storage/${tournament.image}` : "/default-bg.jpg"} 
@@ -144,7 +143,7 @@ export default function TournamentDetails() {
             <div className="meta-info">
               <span>📅 {tournament.date}</span>
               <span>🎮 {tournament.game}</span>
-              <span className="system-type-tag">⚙️ {tournament.system_type === 'points' ? 'Points System' : 'Chat Only'}</span>
+              <span className="system-tag">⚙️ {tournament.system_type === 'points' ? 'Leaderboard Active' : 'Chat Only'}</span>
             </div>
           </div>
         </div>
@@ -152,12 +151,13 @@ export default function TournamentDetails() {
         <div className="content-grid">
           <div className="main-info">
             <div className="card description-card">
-              <h3>Tournament Rules & Description</h3>
+              <h3>Rules & Description</h3>
               <p>{tournament.description || "No description provided."}</p>
             </div>
 
+            {/* Action Section: Join button or Status */}
             <div className="action-section">
-              {!isJoined ? (
+              {!isJoined && !isOrganizer ? (
                 <button 
                   className="btn-primary-glow" 
                   onClick={() => tournament.type === "solo" ? handleJoin() : setShowModal(true)}
@@ -165,13 +165,14 @@ export default function TournamentDetails() {
                   {tournament.type === "solo" ? "JOIN AS SOLO" : "REGISTER YOUR TEAM"}
                 </button>
               ) : (
-                <div className="joined-badge-container">
-                    <span className="joined-status-text">✅ You are a Participant</span>
+                <div className="status-badge-large">
+                  {isOrganizer ? "🛠️ You are the Organizer" : "✅ You are registered"}
                 </div>
               )}
             </div>
 
-            {/* نظام الـ Tabs كيبان غير للمشاركين أو المنظم */}
+            {/* --- الجزء الخاص بـ Tabs (Leaderboard & Chat) --- */}
+            {/* التعديل: التابات كيبانو للمشارك "أو" للمنظم */}
             {(isJoined || isOrganizer) && (
               <div className="tournament-interactive-area">
                 <div className="tabs-menu">
@@ -181,6 +182,7 @@ export default function TournamentDetails() {
                   >
                     💬 Chat
                   </button>
+                  
                   {tournament.system_type === "points" && (
                     <button 
                       className={`tab-btn ${activeTab === "leaderboard" ? "active" : ""}`} 
@@ -191,9 +193,11 @@ export default function TournamentDetails() {
                   )}
                 </div>
 
-                <div className="tab-content card">
+                <div className="tab-content">
                   {activeTab === "chat" ? (
-                    <TournamentChat tournamentId={id} currentUser={currentUser} />
+                    <div className="card chat-card">
+                       <TournamentChat tournamentId={id} currentUser={currentUser} />
+                    </div>
                   ) : (
                     <TournamentLeaderboard 
                       tournamentId={id} 
@@ -206,6 +210,7 @@ export default function TournamentDetails() {
             )}
           </div>
 
+          {/* Sidebar */}
           <aside className="sidebar-participants">
             <div className="card participants-card">
               <h3>Registered Units</h3>
@@ -223,30 +228,17 @@ export default function TournamentDetails() {
           <div className="modal-content-card">
             <h2>🏆 Team Registration</h2>
             {error && <div className="alert-error">{error}</div>}
-            
             <div className="input-group">
               <label>Team Name</label>
-              <input 
-                type="text" 
-                placeholder="Enter team name..." 
-                value={teamName} 
-                onChange={(e) => setTeamName(e.target.value)} 
-              />
+              <input type="text" value={teamName} onChange={(e) => setTeamName(e.target.value)} placeholder="Team Name..." />
             </div>
-
             <div className="input-group">
-              <label>Invite Players (Emails)</label>
+              <label>Invite Teammates (Email)</label>
               <div className="row-add">
-                <input 
-                  type="email" 
-                  placeholder="teammate@email.com" 
-                  value={teammateEmail} 
-                  onChange={(e) => setTeammateEmail(e.target.value)} 
-                />
+                <input type="email" value={teammateEmail} onChange={(e) => setTeammateEmail(e.target.value)} placeholder="email@example.com" />
                 <button type="button" onClick={addTeammate}>Add</button>
               </div>
             </div>
-
             <div className="invited-list">
               {teammates.map(email => (
                 <div key={email} className="email-chip">
@@ -254,16 +246,9 @@ export default function TournamentDetails() {
                 </div>
               ))}
             </div>
-
             <div className="modal-footer">
               <button className="btn-cancel" onClick={() => setShowModal(false)}>Cancel</button>
-              <button 
-                className="btn-confirm" 
-                onClick={handleJoin} 
-                disabled={!teamName || (tournament.type === 'squad' && teammates.length < (tournament.team_size - 1))}
-              >
-                Confirm Join
-              </button>
+              <button className="btn-confirm" onClick={handleJoin} disabled={!teamName}>Confirm</button>
             </div>
           </div>
         </div>
