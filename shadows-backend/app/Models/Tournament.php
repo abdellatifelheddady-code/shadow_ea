@@ -7,15 +7,19 @@ class Tournament extends Model
 {
      use HasFactory;
     protected $table = 'tournaments';
-   protected $fillable = ['title',
-   'description',
-    'image',
+   protected $fillable = [
+        'title',
+    'description',
     'game',
-    'type',
     'date',
+    'type',
+    'system_type', // <--- تأكد بلي هادي موجودة هنا
     'team_size',
+    'image',
     'user_id',
-     'is_approved'];
+    'is_approved'
+
+];
 
     public function creator()
     {
