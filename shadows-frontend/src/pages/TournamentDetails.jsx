@@ -196,7 +196,7 @@ export default function TournamentDetails() {
                 <div className="tab-content">
                   {activeTab === "chat" ? (
                     <div className="card chat-card">
-                       <TournamentChat tournamentId={id} currentUser={currentUser} />
+                      <TournamentChat tournamentId={id} currentUser={currentUser} />
                     </div>
                   ) : (
                     <TournamentLeaderboard 

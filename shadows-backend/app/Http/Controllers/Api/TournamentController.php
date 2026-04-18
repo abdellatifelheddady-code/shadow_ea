@@ -64,7 +64,7 @@ class TournamentController extends Controller
         'game' => $data['game'],
         'date' => $data['date'],
         'type' => $data['type'],
-        'system_type' => $data['system_type'], // <--- حفظ النوع الجديد
+        'system_type' => $data['system_type'],
         'team_size' => $data['type'] === 'squad' ? $data['team_size'] : null,
         'user_id' => auth()->id(),
         'is_approved' => false,

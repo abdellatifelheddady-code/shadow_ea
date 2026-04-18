@@ -5,8 +5,10 @@
   align-items: center;
   padding: 15px 50px;
   background: rgba(10, 10, 10, 0.8); /* Glass effect */
+  -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
   border-bottom: 2px solid #ff0055; /* Neon line */
+  position: -webkit-sticky;
   position: sticky;
   top: 0;
   z-index: 1000;

@@ -1,43 +1,40 @@
 /* tournaments.css */
 
-/* L-khliya dial l-page kamla */
-.page {
-  background-color: #0d1117; /* Dark Grey/Black */
+.tournaments-page {
+  background-color: #0d1117;
   min-height: 100vh;
   padding: 40px 5%;
   color: #ffffff;
   font-family: 'Orbitron', sans-serif;
 }
 
-/* Header dial l-page */
-.page-header {
+.tournaments-page-header {
   text-align: center;
   margin-bottom: 50px;
 }
 
-.section-title {
+.tournaments-section-title {
   font-size: 2.5rem;
   text-transform: uppercase;
   background: linear-gradient(to right, #00d4ff, #ff0055);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   margin-bottom: 10px;
 }
 
-.page-header p {
+.tournaments-page-header p {
   color: #8b949e;
   letter-spacing: 2px;
 }
 
-/* Grid Layout */
-.grid {
+.tournaments-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 30px;
 }
 
-/* Card Style (L-batala) */
-.card {
+.tournament-card {
   background: #161b22;
   border-radius: 15px;
   overflow: hidden;
@@ -46,31 +43,30 @@
   position: relative;
 }
 
-.card:hover {
+.tournament-card:hover {
   transform: translateY(-10px) scale(1.02);
   border-color: #00d4ff;
   box-shadow: 0 10px 30px rgba(0, 212, 255, 0.2);
 }
 
-/* Image Container & Tags */
-.card-image-container {
+.tournament-card-image-container {
   position: relative;
   height: 180px;
   overflow: hidden;
 }
 
-.card-img {
+.tournament-card-img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   transition: 0.5s;
 }
 
-.card:hover .card-img {
+.tournament-card:hover .tournament-card-img {
   filter: brightness(0.7) scale(1.1);
 }
 
-.type-tag {
+.tournament-type-tag {
   position: absolute;
   top: 10px;
   right: 10px;
@@ -78,24 +74,23 @@
   border-radius: 5px;
   font-size: 0.7rem;
   font-weight: bold;
-  background: #ff0055; /* Default red */
+  background: #ff0055;
   color: white;
   box-shadow: 0 0 10px #ff0055;
 }
 
-/* Body dial l-card */
-.card-body {
+.tournament-card-body {
   padding: 20px;
 }
 
-.game-tag {
+.tournament-game-tag {
   color: #00d4ff;
   font-size: 0.8rem;
   font-weight: bold;
   text-transform: uppercase;
 }
 
-.card-body h3 {
+.tournament-card-body h3 {
   margin: 10px 0;
   font-size: 1.3rem;
   white-space: nowrap;
@@ -103,20 +98,20 @@
   text-overflow: ellipsis;
 }
 
-.card-info {
+.tournament-card-info {
   display: flex;
   justify-content: space-between;
   color: #8b949e;
   font-size: 0.85rem;
   margin-top: 15px;
+  gap: 12px;
 }
 
-/* Footer & Button */
-.card-footer {
+.tournament-card-footer {
   padding: 15px 20px 25px;
 }
 
-.btn-view-details {
+.tournament-btn-view-details {
   display: block;
   text-align: center;
   background: transparent;
@@ -130,19 +125,24 @@
   text-transform: uppercase;
 }
 
-.btn-view-details:hover {
+.tournament-btn-view-details:hover {
   background: #00d4ff;
   color: #000;
   box-shadow: 0 0 20px #00d4ff;
 }
 
-/* Loader Style */
-.loader {
+.tournaments-loader {
   text-align: center;
   font-size: 2rem;
   margin-top: 100px;
   color: #00d4ff;
   animation: pulse 1.5s infinite;
+}
+
+.tournaments-no-data {
+  text-align: center;
+  color: #8b949e;
+  font-size: 1rem;
 }
 
 @keyframes pulse {
@@ -151,8 +151,17 @@
   100% { opacity: 0.5; }
 }
 
-/* Responsive */
 @media (max-width: 768px) {
-  .section-title { font-size: 1.8rem; }
-  .grid { grid-template-columns: 1fr; }
+  .tournaments-section-title {
+    font-size: 1.8rem;
+  }
+
+  .tournaments-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .tournament-card-info {
+    flex-direction: column;
+    gap: 8px;
+  }
 }

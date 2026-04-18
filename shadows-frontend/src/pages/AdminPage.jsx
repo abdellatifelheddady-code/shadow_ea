@@ -42,7 +42,7 @@ export default function AdminPage() {
   const handleDelete = async (id) => {
     if (window.confirm("🚨 Are you sure? This will permanently delete the tournament!")) {
       try {
-        // تعديل المسار ليطابق api.php
+      
         await api.delete(`/admin/tournaments/${id}`);
         alert("🗑️ Deleted successfully");
         fetchData();

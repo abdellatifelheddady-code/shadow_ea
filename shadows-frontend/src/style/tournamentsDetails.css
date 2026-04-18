@@ -25,6 +25,7 @@
   border: 1px solid var(--border-color);
   margin-bottom: 30px;
   background: var(--card-bg);
+  -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
 }
 
@@ -51,6 +52,7 @@
   margin: 10px 0;
   background: linear-gradient(90deg, var(--primary-glow), var(--secondary-glow));
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   text-transform: uppercase;
 }
@@ -71,6 +73,7 @@
   border: 1px solid var(--border-color);
   border-radius: 15px;
   padding: 25px;
+  -webkit-backdrop-filter: blur(5px);
   backdrop-filter: blur(5px);
   margin-bottom: 20px;
 }
@@ -219,6 +222,7 @@
   align-items: center;
   justify-content: center;
   z-index: 1000;
+  -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
 }
 

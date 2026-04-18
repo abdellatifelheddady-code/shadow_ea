@@ -21,7 +21,7 @@ export default function CreateTournament() {
     formData.append("game", game);
     formData.append("date", date);
     formData.append("type", type);
-    formData.append("system_type", systemType); // <--- إرسال النوع المختار
+    formData.append("system_type", systemType); 
     formData.append("image", image);
     if (type === "squad") formData.append("team_size", teamSize);
 
@@ -30,7 +30,6 @@ export default function CreateTournament() {
         headers: { "Content-Type": "multipart/form-data" }
       });
       alert("Tournament created! Waiting for admin approval.");
-      // مسح الفورم
       setTitle(""); setDescription(""); setGame(""); setDate(""); 
       setImage(null); setType("solo"); setSystemType("chat_only");
     } catch (err) {
@@ -59,7 +58,6 @@ export default function CreateTournament() {
             <input type="date" value={date} onChange={(e)=>setDate(e.target.value)} required/>
           </div>
 
-          {/* --- اختيار نوع البطولة (Solo/Squad) --- */}
           <div className="form-group">
             <label>Format:</label>
             <select value={type} onChange={(e) => setType(e.target.value)}>
@@ -75,7 +73,6 @@ export default function CreateTournament() {
             </div>
           )}
 
-          {/* --- النوع الجديد: نظام النقاط أو الشات فقط --- */}
           <div className="form-group">
             <label>Tournament System:</label>
             <select value={systemType} onChange={(e) => setSystemType(e.target.value)}>
