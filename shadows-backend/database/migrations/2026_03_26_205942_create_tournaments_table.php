@@ -23,7 +23,7 @@ return new class extends Migration
         $table->boolean('is_approved')->default(false);
 
         $table->string('image')->nullable();
-
+        
         $table->integer('team_size')->nullable();
             $table->timestamps();
         });
@@ -35,5 +35,8 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('tournaments');
+        Schema::table('tournaments', function (Blueprint $table) {
+            $table->dropColumn('is_registration_open');
+        });
     }
 };

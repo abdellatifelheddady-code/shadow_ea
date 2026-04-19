@@ -5,24 +5,15 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\TournamentController;
 
-/*
-|--------------------------------------------------------------------------
-| Public Routes
-|--------------------------------------------------------------------------
-*/
+
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 
-// هادو خاصهم يكونوا برا باش يقدر أي واحد يشوفهم بلا Login
 Route::get('/tournaments', [TournamentController::class, 'index']);
 Route::get('/tournaments/{id}', [TournamentController::class, 'show']);
 
 
-/*
-|--------------------------------------------------------------------------
-| Protected Routes (Authenticated Users)
-|--------------------------------------------------------------------------
-*/
+
 Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('/user', function (Request $request) {
@@ -41,33 +32,25 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/users/search', [TournamentController::class, 'searchUser']);
 
 });
-    /*
-    |--------------------------------------------------------------------------
-    | Admin Routes
-    |--------------------------------------------------------------------------
-    */
 
 
-// routes/api.php
+
 Route::middleware('auth:sanctum')->prefix('admin')->group(function () {
-    // هادي اللي كتجيب Pending
 
 
-    // هادي اللي كتجيب الكل
+
     Route::get('/all-tournaments', [TournamentController::class, 'allTournaments']);
 
-    // هادي ديال Approve
     Route::post('/tournaments/{id}/approve', [TournamentController::class, 'approve']);
 Route::get('/pending-tournaments', [TournamentController::class, 'pending']);
-    // هادي ديال Delete
     Route::delete('/tournaments/{id}', [TournamentController::class, 'destroy']);
 });
 Route::middleware('auth:sanctum')->group(function () {
-    // ... الـ routes اللي عندك ديجا ...
 
-    // شات البطولة
     Route::get('/tournaments/{id}/messages', [TournamentController::class, 'getMessages']);
     Route::post('/tournaments/{id}/messages', [TournamentController::class, 'sendMessage']);
+
 });
 Route::get('/tournaments/{id}/leaderboard', [TournamentController::class, 'getLeaderboard']);
 Route::post('/tournaments/{id}/points', [TournamentController::class, 'updatePoints']);
+Route::middleware('auth:sanctum')->post('/tournaments/{id}/toggle-registration', [TournamentController::class, 'toggleRegistration']);

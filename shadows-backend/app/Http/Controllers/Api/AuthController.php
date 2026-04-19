@@ -56,7 +56,7 @@ class AuthController extends Controller
     $data = $request->validate([
         'name' => 'required|string|max:255',
         'email' => 'required|email|unique:users,email',
-        'phone' => 'required|string', // الهاتف إجباري في التسجيل
+        'phone' => 'required|string', 
         'password' => 'required|string|confirmed|min:6',
     ]);
 

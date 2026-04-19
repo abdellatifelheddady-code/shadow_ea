@@ -10,6 +10,7 @@
   background: rgba(22, 27, 34, 0.7);
   padding: 30px;
   border-radius: 20px;
+  -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.05);
   margin-bottom: 40px;
@@ -23,6 +24,7 @@
   font-size: 1.8rem;
   background: linear-gradient(90deg, #00d4ff, #ff0055);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   margin-bottom: 5px;
 }
