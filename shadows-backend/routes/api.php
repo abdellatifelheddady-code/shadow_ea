@@ -52,5 +52,16 @@ Route::middleware('auth:sanctum')->group(function () {
 
 });
 Route::get('/tournaments/{id}/leaderboard', [TournamentController::class, 'getLeaderboard']);
-Route::post('/tournaments/{id}/points', [TournamentController::class, 'updatePoints']);
+Route::middleware('auth:sanctum')->group(function () {
+    // هاد السطر خاصو يكون داخل هاد الـ group
+    Route::post('/tournaments/{id}/points', [TournamentController::class, 'updatePoints']);
+});
 Route::middleware('auth:sanctum')->post('/tournaments/{id}/toggle-registration', [TournamentController::class, 'toggleRegistration']);
+
+Route::middleware('auth:sanctum')->group(function () {
+    // إنهاء البطولة
+    Route::post('/tournaments/{id}/finish', [TournamentController::class, 'finishTournament']);
+
+    // وضع تقييم للمنظم
+    Route::post('/tournaments/{id}/rate', [TournamentController::class, 'rateOrganizer']);
+});
