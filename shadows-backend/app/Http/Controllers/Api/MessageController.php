@@ -23,7 +23,7 @@ public function index($tournamentId)
         $userId = auth('sanctum')->id();
 
         // تأكد واش مسجل فـ البطولة
-        $isRegistered = \App\Models\TournamentRegistration::where('tournament_id', $tournamentId)
+        $isRegistered = TournamentRegistration::where('tournament_id', $tournamentId)
             ->where('user_id', $userId)
             ->exists();
 

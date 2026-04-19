@@ -15,7 +15,7 @@ export default function TournamentDetails() {
   const [showModal, setShowModal] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
 
-  // State للتبديل بين الشات والترتيب
+  // التبديل بين الشات والترتيب
   const [activeTab, setActiveTab] = useState("chat");
 
   // States ديال الـ Squad
@@ -51,8 +51,18 @@ export default function TournamentDetails() {
   }, [initData]);
 
   // --- التحقق من الصلاحيات ---
-  // المنظم هو لي كريكريا البطولة (user_id ف جدول tournaments كيتطابق مع id ديال المستخدم)
   const isOrganizer = currentUser && tournament && currentUser.id === tournament.user_id;
+
+  // --- دالة قفل/فتح التسجيل (الميزة الجديدة) ---
+  const toggleRegistration = async () => {
+    try {
+      const res = await api.post(`/tournaments/${id}/toggle-registration`);
+      setTournament({ ...tournament, is_registration_open: res.data.is_registration_open });
+      alert(`Registration is now ${res.data.is_registration_open ? 'OPEN' : 'CLOSED'}`);
+    } catch (err) {
+      alert("Error updating registration status");
+    }
+  };
 
   const handleJoin = async () => {
     if (!currentUser) {
@@ -155,24 +165,44 @@ export default function TournamentDetails() {
               <p>{tournament.description || "No description provided."}</p>
             </div>
 
-            {/* Action Section: Join button or Status */}
-            <div className="action-section">
-              {!isJoined && !isOrganizer ? (
-                <button 
-                  className="btn-primary-glow" 
-                  onClick={() => tournament.type === "solo" ? handleJoin() : setShowModal(true)}
-                >
-                  {tournament.type === "solo" ? "JOIN AS SOLO" : "REGISTER YOUR TEAM"}
-                </button>
-              ) : (
-                <div className="status-badge-large">
-                  {isOrganizer ? "🛠️ You are the Organizer" : "✅ You are registered"}
+            {/* --- Action Section (Join / Toggle / Status) --- */}
+            <div className="action-section card" style={{ padding: '20px', textAlign: 'center' }}>
+              
+              {/* واجهة المنظم للتحكم في حالة التسجيل */}
+              {isOrganizer && (
+                <div className="organizer-controls" style={{ marginBottom: '20px', borderBottom: '1px solid #333', paddingBottom: '15px' }}>
+                  <p style={{ color: '#aaa', marginBottom: '10px' }}>Admin Actions:</p>
+                  <button 
+                    className={`btn-toggle-reg ${tournament.is_registration_open ? 'btn-danger' : 'btn-success'}`}
+                    onClick={toggleRegistration}
+                  >
+                    {tournament.is_registration_open ? "⛔ Close Registration" : "🔓 Open Registration"}
+                  </button>
                 </div>
               )}
+
+              {/* منطق زر الانضمام للاعبين */}
+              {!isJoined && !isOrganizer ? (
+                tournament.is_registration_open ? (
+                  <button 
+                    className="btn-primary-glow" 
+                    onClick={() => tournament.type === "solo" ? handleJoin() : setShowModal(true)}
+                  >
+                    {tournament.type === "solo" ? "JOIN AS SOLO" : "REGISTER YOUR TEAM"}
+                  </button>
+                ) : (
+                  <div className="closed-status-box">
+                    <span style={{ fontSize: '1.2rem', color: '#ff4d4d' }}>🚫 Registration is currently CLOSED</span>
+                  </div>
+                )
+              ) : (
+                !isOrganizer && <div className="status-badge-large">✅ You are registered</div>
+              )}
+
+              {isOrganizer && <div className="status-badge-large">🛠️ Organizer View</div>}
             </div>
 
-            {/* --- الجزء الخاص بـ Tabs (Leaderboard & Chat) --- */}
-            {/* التعديل: التابات كيبانو للمشارك "أو" للمنظم */}
+            {/* --- Tabs (Leaderboard & Chat) --- */}
             {(isJoined || isOrganizer) && (
               <div className="tournament-interactive-area">
                 <div className="tabs-menu">
@@ -248,7 +278,13 @@ export default function TournamentDetails() {
             </div>
             <div className="modal-footer">
               <button className="btn-cancel" onClick={() => setShowModal(false)}>Cancel</button>
-              <button className="btn-confirm" onClick={handleJoin} disabled={!teamName}>Confirm</button>
+              <button 
+                className="btn-confirm" 
+                onClick={handleJoin} 
+                disabled={!teamName || teammates.length < (tournament.team_size - 1)}
+              >
+                Confirm
+              </button>
             </div>
           </div>
         </div>

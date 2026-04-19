@@ -17,7 +17,8 @@ class Tournament extends Model
     'team_size',
     'image',
     'user_id',
-    'is_approved'
+    'is_approved',
+     'is_registration_open'
 
 ];
 

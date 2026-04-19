@@ -49,6 +49,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('/tournaments/{id}/messages', [TournamentController::class, 'getMessages']);
     Route::post('/tournaments/{id}/messages', [TournamentController::class, 'sendMessage']);
+
 });
 Route::get('/tournaments/{id}/leaderboard', [TournamentController::class, 'getLeaderboard']);
 Route::post('/tournaments/{id}/points', [TournamentController::class, 'updatePoints']);
+Route::middleware('auth:sanctum')->post('/tournaments/{id}/toggle-registration', [TournamentController::class, 'toggleRegistration']);
