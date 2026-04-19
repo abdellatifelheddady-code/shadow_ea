@@ -10,6 +10,9 @@ use App\Models\Team;
 use App\Models\User;
 use App\Models\Message; // تأكد بلي درتي ليها Import لفوق
 use App\Models\TournamentResult;
+
+use App\Models\OrganizerRating;
+use Illuminate\Support\Facades\DB;
 class TournamentController extends Controller
 {
     // get all tournaments (with participants)
@@ -217,16 +220,16 @@ public function register($id, Request $request) {
 public function show($id)
 {
     try {
-        // 1. جلب البطولة مع المشاركين
-        $tournament = Tournament::with('participants')->findOrFail($id);
+        // 1. جلب البطولة مع المشاركين ومع المنظم (creator) والبادج ديالو
+        $tournament = Tournament::with(['participants', 'creator' => function($query) {
+            $query->select('id', 'name', 'organizer_badge');
+        }])->findOrFail($id);
 
         // 2. تعديل بيانات المشاركين باش نزيدو ليهم team_name يدوياً
         $tournament->participants->transform(function ($participant) {
-            // كنشوفو واش كاين team_id ف الجدول الوسيط (pivot)
             $teamId = $participant->pivot->team_id;
 
             if ($teamId) {
-                // كنجيبو اسم الفريق من جدول teams
                 $team = Team::find($teamId);
                 $participant->team_name = $team ? $team->name : "Solo Player";
             } else {
@@ -364,5 +367,76 @@ public function toggleRegistration($id)
         \Log::error("Registration Toggle Error: " . $e->getMessage());
         return response()->json(['message' => 'Server Error: ' . $e->getMessage()], 500);
     }
+}
+
+
+public function finishTournament($id) {
+    $tournament = Tournament::findOrFail($id);
+
+    // تشيك واش اللي باغي يسدها هو اللي كرياها
+    if (auth()->id() !== $tournament->user_id) {
+        return response()->json(['message' => 'Unauthorized'], 403);
+    }
+
+    $tournament->status = 'finished';
+    $tournament->save();
+
+    return response()->json(['message' => 'Tournament finished! Ratings are now open.']);
+}
+
+// 2. دالة تسجيل التقييم وتحديث البادج
+public function rateOrganizer(Request $request, $id) {
+    $tournament = Tournament::findOrFail($id);
+
+    // تشيك واش البطولة سلات فعلاً
+    if ($tournament->status !== 'finished') {
+        return response()->json(['message' => 'You can only rate after the tournament ends.'], 400);
+    }
+
+    $request->validate([
+        'stars' => 'required|integer|min:1|max:5',
+        'comment' => 'nullable|string|max:500'
+    ]);
+
+    // التأكد بلي اللاعب ما كيقيمش راسو وبلي مسجل فالبطولة (اختياري ولكن أحسن)
+
+    // تسجيل التقييم
+    OrganizerRating::updateOrCreate(
+        ['user_id' => auth()->id(), 'tournament_id' => $id], // باش ما يعاودش يقيم نفس البطولة
+        [
+            'organizer_id' => $tournament->user_id,
+            'stars' => $request->stars,
+            'comment' => $request->comment
+        ]
+    );
+
+    // تحديث البادج ديال المنظم تلقائياً
+    $this->calculateOrganizerBadge($tournament->user_id);
+
+    return response()->json(['message' => 'Rating submitted successfully!']);
+}
+
+// 3. المنطق ديال حساب البادج (Private Function)
+private function calculateOrganizerBadge($organizerId) {
+    // كنجيبو معدل النجوم ديال هاد المنظم فكاع البطولات
+    $average = OrganizerRating::where('organizer_id', $organizerId)->avg('stars');
+
+    // كنجيبو عدد البطولات لي "سلاهم" بنجاح
+    $finishedCount = Tournament::where('user_id', $organizerId)->where('status', 'finished')->count();
+
+    $user = User::find($organizerId);
+
+    // Logic ديال البادجات (تقدر تبدلو كيف بغيتي)
+    if ($finishedCount >= 10 && $average >= 4.5) {
+        $user->organizer_badge = 'Elite Organizer';
+    } elseif ($finishedCount >= 5 && $average >= 3.5) {
+        $user->organizer_badge = 'Pro Organizer';
+    } elseif ($finishedCount >= 1) {
+        $user->organizer_badge = 'Basic Organizer';
+    } else {
+        $user->organizer_badge = 'Rookie';
+    }
+
+    $user->save();
 }
 }

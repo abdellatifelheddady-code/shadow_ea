@@ -16,7 +16,8 @@ class User extends Authenticatable
         'email',
         'password',
         'is_admin',
-        'phone', // مهم
+        'phone',
+        'organizer_badge',
     ];
 
     protected $hidden = [
@@ -42,5 +43,9 @@ public function team()
 public function registrations()
 {
     return $this->hasMany(TournamentRegistration::class);
+}
+// التقييمات اللي حصل عليها المستخدم كمنظم
+public function organizerRatings() {
+    return $this->hasMany(OrganizerRating::class, 'organizer_id');
 }
 }
