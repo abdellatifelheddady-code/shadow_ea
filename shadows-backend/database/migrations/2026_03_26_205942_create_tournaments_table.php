@@ -23,8 +23,10 @@ return new class extends Migration
         $table->boolean('is_approved')->default(false);
 
         $table->string('image')->nullable();
-        
+
         $table->integer('team_size')->nullable();
+        $table->boolean('is_registration_open')->default(true);
+        $table->string('status')->default('open');
             $table->timestamps();
         });
     }
