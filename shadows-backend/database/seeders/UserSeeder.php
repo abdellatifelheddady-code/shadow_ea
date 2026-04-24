@@ -81,6 +81,34 @@ class UserSeeder extends Seeder
                 'phone' => '+212600000010',
                 'is_admin' => false,
             ],
+            [
+                'name' => 'Grace Taylor',
+                'email' => 'grace@example.com',
+                'password' => Hash::make('password123'),
+                'phone' => '+212600000011',
+                'is_admin' => false,
+            ],
+            [
+                'name' => 'Henry Martin',
+                'email' => 'henry@example.com',
+                'password' => Hash::make('password123'),
+                'phone' => '+212600000012',
+                'is_admin' => false,
+            ],
+            [
+                'name' => 'Iris Anderson',
+                'email' => 'iris@example.com',
+                'password' => Hash::make('password123'),
+                'phone' => '+212600000013',
+                'is_admin' => false,
+            ],
+            [
+                'name' => 'Jack Martinez',
+                'email' => 'jack@example.com',
+                'password' => Hash::make('password123'),
+                'phone' => '+212600000014',
+                'is_admin' => false,
+            ],
         ];
 
         foreach ($users as $user) {

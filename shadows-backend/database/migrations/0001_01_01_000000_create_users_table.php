@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('phone')->nullable();
             $table->string('password');
             $table->boolean('is_admin')->default(false);
+            $table->string('organizer_badge')->default('Rookie');
             $table->rememberToken();
             $table->timestamps();
         });

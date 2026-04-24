@@ -109,12 +109,35 @@ public function allTournaments() {
 }
 
 public function destroy($id) {
+    // 1. التاكد من صلاحيات الآدمين
     if (!auth()->user()->is_admin) {
         return response()->json(['message' => 'Forbidden'], 403);
     }
-    $tournament = Tournament::findOrFail($id);
-    $tournament->delete();
-    return response()->json(['message' => 'Tournament deleted']);
+
+    try {
+        $tournament = Tournament::findOrFail($id);
+
+        // 2. مسح العلاقات (مثلاً المشاركين)
+        // إيلا كانت علاقة belongsToMany استعمل detach()
+        if (method_exists($tournament, 'participants')) {
+            $tournament->participants()->detach();
+        }
+
+        // 3. إيلا كان عندك تسجيلات (Registrations) مرتبطة بـ foreign key
+        // $tournament->registrations()->delete();
+
+        // 4. مسح البطولة
+        $tournament->delete();
+
+        return response()->json(['message' => 'Tournament deleted successfully']);
+
+    } catch (\Exception $e) {
+        // هكا غتعرف شنو هو الخطأ بالضبط إيلا بقا الـ 500
+        return response()->json([
+            'message' => 'Error deleting tournament',
+            'error' => $e->getMessage()
+        ], 500);
+    }
 }
 public function register($id, Request $request) {
     $tournament = Tournament::findOrFail($id);
