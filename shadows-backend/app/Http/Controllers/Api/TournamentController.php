@@ -19,7 +19,7 @@ class TournamentController extends Controller
    public function index()
 {
     $tournaments = Tournament::with('participants')
-        ->where('is_approved', true) // مهم جداً باش ما يبانوش Pending للناس
+        ->where('is_approved', true)
         ->get();
     return response()->json($tournaments);
 }

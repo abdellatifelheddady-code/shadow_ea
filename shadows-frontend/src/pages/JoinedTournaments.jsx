@@ -21,8 +21,14 @@ export default function JoinedTournaments() {
       });
   }, []);
 
-  if (loading) return <div className="page">Loading...</div>;
-
+if (loading) return (
+  <div className="page loading-screen">
+    <div className="loader-wrapper">
+      <div className="game-spinner"></div>
+      <p className="loading-text">FETCHING YOUR GAMES...</p>
+    </div>
+  </div>
+);
   return (
     <div className="page">
       <div className="header-section">

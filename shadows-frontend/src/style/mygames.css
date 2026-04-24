@@ -121,3 +121,51 @@
   background: #fff;
   box-shadow: 0 0 10px #fff;
 }
+/* الحاوية الكبيرة للـ Loading */
+.loading-screen {
+    background-color: #0a0a0b;
+    /* كنحيدو الطول الكامل للشاشة ونقصو منو طول الـ Navbar (غالبا 70px-80px) */
+    min-height: calc(100vh - 80px); 
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* حيدنا position: fixed و z-index باش ما يغطيش الـ Header */
+}
+
+.loader-wrapper {
+    text-align: center;
+}
+
+/* الـ Spinner بـ ستيل عصري */
+.game-spinner {
+    width: 60px;
+    height: 60px;
+    border: 4px solid rgba(59, 130, 246, 0.1);
+    border-left-color: #3b82f6; /* اللون الأزرق الأساسي عندك */
+    border-right-color: #8b5cf6; /* لمسة بنفسجية */
+    border-radius: 50%;
+    margin: 0 auto 20px;
+    animation: spin-dual 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+}
+
+.loading-text {
+    color: #3b82f6;
+    font-size: 0.9rem;
+    font-weight: bold;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+/* الأنميشن ديال الدوران */
+@keyframes spin-dual {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* أنميشن نبض النص */
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}

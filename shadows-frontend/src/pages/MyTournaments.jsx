@@ -26,7 +26,13 @@ export default function MyTournaments() {
     fetchData();
   }, []);
 
-  if (loading) return <div className="page">Loading your tournaments...</div>;
+  // if (loading) return <div className="page">Loading your tournaments...</div>;
+  if (loading) return (
+  <div className="page loading-state">
+    <div className="spinner"></div>
+    <p>Loading your tournaments...</p>
+  </div>
+);
 
   return (
     <div className="page">

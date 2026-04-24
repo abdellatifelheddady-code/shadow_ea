@@ -152,7 +152,39 @@ export default function TournamentDetails() {
     );
   };
 
-  if (loading || !tournament) return <div className="loader">SYNCING DATA...</div>;
+  if (loading || !tournament) {
+  return (
+    <div style={{
+      backgroundColor: '#0a0a0b', // نفس لون الخلفية ديال السيت
+      height: '100vh',
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
+      alignItems: 'center',
+      color: '#3b82f6',
+      fontFamily: 'sans-serif'
+    }}>
+      <div className="spinner" style={{
+        width: '40px',
+        height: '40px',
+        border: '3px solid rgba(59, 130, 246, 0.1)',
+        borderTop: '3px solid #3b82f6',
+        borderRadius: '50%',
+        animation: 'spin 1s linear infinite',
+        marginBottom: '15px'
+      }}></div>
+      <div style={{ letterSpacing: '2px', fontWeight: 'bold' }}>SYNCING DATA...</div>
+      
+      {/* هاد الـ style غير باش يخدم الـ animation ديال الـ spinner */}
+      <style>{`
+        @keyframes spin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+      `}</style>
+    </div>
+  );
+}
 
   return (
     <div className="page tournament-detail">

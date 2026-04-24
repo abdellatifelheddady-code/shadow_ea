@@ -164,3 +164,31 @@
     grid-template-columns: 1fr;
   }
 }
+/* الخلفية الكحلة للصفحة فاش كتكون كتحمل */
+.loading-state {
+    background-color: #0a0a0b !important; /* اللون الكحل ديالك */
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: #3b82f6; /* اللون الأزرق ديال السيت */
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+/* الـ Spinner اللي كيدور */
+.spinner {
+    width: 45px;
+    height: 45px;
+    border: 3px solid rgba(59, 130, 246, 0.1);
+    border-top: 3px solid #3b82f6;
+    border-radius: 50%;
+    margin-bottom: 20px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
